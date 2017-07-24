@@ -12,6 +12,7 @@
 </head>
 	<body>
 		<h1>文档管理系统注册</h1>
+		<h2>用户注册</h2>
 		<form name="registerForm" id="registerForm" action="FileManagerSystem" method="get">
 			用户名：<input type="text" name="addUserName" id="addUserName"><br><br>
 			密&nbsp;&nbsp;码：<input type="password" name="addPassword" id="addPassword"><br><br>
@@ -20,7 +21,5 @@
 		</form>
 	    
 	</body>
-	<script>
-	window.location="http://localhost:8083/FileManagerSystem_1/main.jsp"
-	</script>
+
 </html>

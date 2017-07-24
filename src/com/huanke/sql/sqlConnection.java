@@ -23,6 +23,11 @@ public class sqlConnection {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * 向数据库中插入数据，并会断开连接
+	 * 
+	 * @param user
+	 */
 	public void insertData(User user) {
 		String name = user.getUserName();
 		String password = user.getUserPassword();
@@ -44,13 +49,34 @@ public class sqlConnection {
 	}
 
 	/**
+	 * 与数据库中的信息进行匹配查询,需手动释放ResultSet链接
+	 * 
+	 * @param user
+	 * @return 结果集
+	 */
+	public ResultSet qurey(User user) {
+		Connection conn = this.createSqlConntection();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sql = "selet * from checklogin where username = '" + user.getUserName() + "'";
+		try {
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		this.closeConnection(conn);
+		return rs;
+	}
+
+	/**
 	 * 创建于数据库的链接
 	 * 
 	 * @return conn
 	 */
 	public Connection createSqlConntection() {
 		String jdbcDriver = "com.mysql.jdbc.Driver";
-		String db_url = "jdbc:mysql://localhost:3306/lixtudy";
+		String db_url = "jdbc:mysql://localhost:3306/lixtudy?useSSL=false";
 		String user = "root";
 		String password = "";
 		Connection conn = null;

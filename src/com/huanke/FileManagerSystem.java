@@ -39,19 +39,42 @@ public class FileManagerSystem extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		// 规定编码格式
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
+
+		// 服务器输出流,应输出为HTML格式
+		PrintWriter out = response.getWriter();
+		String docType = "<!DOCTYPE HTML>\n";
+		out.println(docType + "<html>\n<body>\n");
+
+		// 获得注册信息，并创建成User类
 		String inputUserName = request.getParameter("addUserName");
 		String inputPassword = request.getParameter("addPassword");
 		User user1 = new User(inputUserName, inputPassword);
-		sqlConnection testSQL = new sqlConnection();
-		testSQL.insertData(user1);
-		PrintWriter out = response.getWriter();
-		String docType = "<!DOCTYPE HTML>\n";
-		String title = "文件管理系统";
-		out.println(docType + "<html>\n" + "<head><title>" + title + "</title></head>\n" + "<body>\n"
-				+ "<h1 align=\"center\">" + title + "</h1>\n");
-		out.println("<script> window.location=http://localhost:8083/FileManagerSystem_1/main.jsp</script>");
+
+		// 创建数据库链接
+		sqlConnection sqlOperation = new sqlConnection();
+		//
+		ResultSet checkUserName = null;
+		checkUserName = sqlOperation.qurey(user1);
+		try {
+			if (checkUserName.next()) {
+				out.println("<script language='javascript'>alert('该用户名已存在，请更换用户名！')");
+			} else {
+
+			}
+		} catch (SQLException se) {
+			se.printStackTrace();
+		}
+
+		// 向数据库中添加信息
+		sqlOperation.insertData(user1);
+		// String docType = "<!DOCTYPE HTML>\n";
+		// out.println(docType + "<html>\n<body>\n");
+		// 注册成功则跳转回登陆界面
+		out.println("<script>\nwindow.location ='http://localhost:8083/FileManagerSystem_1/main.jsp'</script>\n");
+		out.println("</html>");
 	}
 
 	/**
