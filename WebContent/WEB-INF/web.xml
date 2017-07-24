@@ -29,4 +29,14 @@
     <servlet-name>sql_connection</servlet-name>
     <url-pattern>/sql_connection</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Register</display-name>
+    <servlet-name>Register</servlet-name>
+    <servlet-class>com.huanke.Register</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Register</servlet-name>
+    <url-pattern>/Register</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -51,21 +51,28 @@ public class sqlConnection {
 	/**
 	 * 与数据库中的信息进行匹配查询,需手动释放ResultSet链接
 	 * 
-	 * @param user
-	 * @return 结果集
+	 * @param User
+	 *            user
+	 * @return ResultSet
 	 */
 	public ResultSet qurey(User user) {
 		Connection conn = this.createSqlConntection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = "selet * from checklogin where username = '" + user.getUserName() + "'";
+		String sql = "select * from checklogin where username = '" + user.getUserName() + "'";
 		try {
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			// try {
+			// conn.close();
+			// } catch (SQLException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
 		}
-		this.closeConnection(conn);
 		return rs;
 	}
 
@@ -108,8 +115,7 @@ public class sqlConnection {
 	 * 获得Statement
 	 * 
 	 * @param conn
-	 *            数据库链接接口
-	 * @return stmt Statement接口
+	 * @return Statement
 	 */
 	public Statement getStatement(Connection conn) {
 		Statement stmt = null;
@@ -139,9 +145,9 @@ public class sqlConnection {
 
 	/**
 	 * 
-	 * @param conn
-	 * @param sql
-	 * @return pps
+	 * @param Connection
+	 * @param String
+	 * @return PreparedStatement
 	 */
 	public PreparedStatement getPrepareStatement(Connection conn, String sql) {
 		PreparedStatement pps = null;
@@ -156,8 +162,8 @@ public class sqlConnection {
 	/**
 	 * 获得ResultSet
 	 * 
-	 * @param stmt
-	 * @return
+	 * @param Statement
+	 * @return ResultSet
 	 */
 	public ResultSet getResultSet(Statement stmt) {
 		ResultSet rs = null;
@@ -172,7 +178,7 @@ public class sqlConnection {
 	/**
 	 * 关闭ResultSet
 	 * 
-	 * @param rs
+	 * @param ResultSet
 	 */
 	public void closeResultSet(ResultSet rs) {
 		if (rs != null) {

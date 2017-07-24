@@ -23,7 +23,7 @@ h1 {
 		<br /> 密 &nbsp;&nbsp;码：<input type="password" id=userpassword name="userpassword"
 			size="20"> <br /> <br />
 			 <input type="submit"  name="logIn" id="logIn" value="登录"> 
-			 <input type="button" onclick="window.location.href='login.jsp'" onclick="openpage()" value="注册">
+			 <input type="button" onclick="window.location.href='register.jsp'" onclick="openpage()" value="注册">
 	</form>
 	</body>
 </html>
