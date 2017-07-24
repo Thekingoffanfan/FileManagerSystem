@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>FileManagerSystem_1</display-name>
+  <welcome-file-list>
+    <welcome-file>main.html</welcome-file>
+    <welcome-file>main.htm</welcome-file>
+    <welcome-file>main.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>FileManagerSystem</display-name>
+    <servlet-name>FileManagerSystem</servlet-name>
+    <servlet-class>com.huanke.FileManagerSystem</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FileManagerSystem</servlet-name>
+    <url-pattern>/FileManagerSystem</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>sql_connection</display-name>
+    <servlet-name>sql_connection</servlet-name>
+    <servlet-class>com.huanke.sql.sql_connection</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>sql_connection</servlet-name>
+    <url-pattern>/sql_connection</url-pattern>
+  </servlet-mapping>
+</web-app>
