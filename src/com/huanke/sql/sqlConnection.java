@@ -14,11 +14,11 @@ import com.huanke.User;
 /**
  * MySql Operation
  */
-public class sqlConnection {
+public class SQLConnection {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public sqlConnection() {
+	public SQLConnection() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -35,11 +35,11 @@ public class sqlConnection {
 		conn = this.createSqlConntection(); // 得到一个连接
 		PreparedStatement ps = null; // 用于插入数据a
 		// sql语句，向表user里面，插入name和pass的值
-		String sql = "insert into checklogin(username,userpassword) values('" + name + "','" + password + "')";
+		String sql = "insert into checklogin(username,userpassword) values(?,?)";
 		ps = this.getPrepareStatement(conn, sql);
 		try {
-			// ps.setString(1, userName);
-			// ps.setString(2, passWord);
+			ps.setString(1, name);
+			ps.setString(2, password);
 			ps.executeUpdate();
 			ps.close();
 			conn.close();
@@ -55,14 +55,14 @@ public class sqlConnection {
 	 *            user
 	 * @return ResultSet
 	 */
-	public ResultSet qurey(User user) {
+	public ResultSet qurey(String user) {
 		Connection conn = this.createSqlConntection();
 		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sql = "select * from checklogin where username = '" + user.getUserName() + "'";
+		ResultSet result = null;
+		String sql = "select * from checklogin where username = '" + user + "'";
 		try {
 			ps = conn.prepareStatement(sql);
-			rs = ps.executeQuery();
+			result = ps.executeQuery();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -73,7 +73,33 @@ public class sqlConnection {
 			// e.printStackTrace();
 			// }
 		}
-		return rs;
+		return result;
+	}
+
+	/**
+	 * 检测是否有与输入匹配的信息
+	 * 
+	 * @param User
+	 * @return boolean
+	 * @throws SQLException
+	 */
+	public boolean isExist(User user) throws SQLException {
+		Connection conn = this.createSqlConntection();
+		PreparedStatement queryUser = null;
+		ResultSet resultOfQueryUser = null;
+		String sql = "select * from checklogin where username='" + user.getUserName() + "'and userpassword='"
+				+ user.getUserPassword() + "'";
+		queryUser = conn.prepareStatement(sql);
+		resultOfQueryUser = queryUser.executeQuery();
+		if (resultOfQueryUser.next()) {
+			this.closeResultSet(resultOfQueryUser);
+			this.closePreparedStatement(queryUser);
+			this.closeConnection(conn);
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	/**
@@ -157,6 +183,17 @@ public class sqlConnection {
 			se.printStackTrace();
 		}
 		return pps;
+	}
+
+	public void closePreparedStatement(PreparedStatement ps) {
+		if (ps != null) {
+			try {
+				ps.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		ps = null;
 	}
 
 	/**

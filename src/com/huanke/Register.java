@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.huanke.sql.sqlConnection;
+import com.huanke.sql.Md5Encryption;
+import com.huanke.sql.SQLConnection;
 
 /**
  * Servlet implementation class Register
@@ -55,14 +56,17 @@ public class Register extends HttpServlet {
 		// 获得注册信息，并创建成User类
 		String inputUserName = request.getParameter("addUserName");
 		String inputPassword = request.getParameter("addPassword");
-		User user1 = new User(inputUserName, inputPassword);
+
+		String pwd = Md5Encryption.encryption(inputPassword);
+		// String password = new String(md5);
+		User user1 = new User(inputUserName, pwd);
 
 		// 创建关于数据库操作对象
-		sqlConnection sqlOperation = new sqlConnection();
+		SQLConnection sqlOperation = new SQLConnection();
 
 		// 查询匹配信息，返回结果
 		ResultSet checkUserName = null;
-		checkUserName = sqlOperation.qurey(user1);
+		checkUserName = sqlOperation.qurey(user1.getUserName());
 		try {
 
 			// true则用户已存在，false说明是新用户
@@ -85,5 +89,4 @@ public class Register extends HttpServlet {
 			}
 		}
 	}
-
 }
