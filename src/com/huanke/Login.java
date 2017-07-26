@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.huanke.sql.Md5Encryption;
-import com.huanke.sql.SQLConnection;
+import com.huanke.sql.UserSqlServiceImpl;
 
 /**
  * Servlet implementation class LogIn
@@ -45,6 +45,7 @@ public class Login extends HttpServlet {
 		// TODO Auto-generated method stub
 
 		// 设置输出html,编码格式为utf-8
+		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
 
@@ -64,8 +65,8 @@ public class Login extends HttpServlet {
 		userLogin = new User(userName, pwd);
 
 		// 数据库操作
-		SQLConnection sqlOperation = null;
-		sqlOperation = new SQLConnection();
+		UserSqlServiceImpl sqlOperation = null;
+		sqlOperation = new UserSqlServiceImpl();
 		// boolean checkResult = false;
 		try {
 			boolean checkResult = sqlOperation.isExist(userLogin);

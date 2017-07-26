@@ -49,4 +49,24 @@
     <servlet-name>Login</servlet-name>
     <url-pattern>/Login</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UploadDoc</display-name>
+    <servlet-name>UploadDoc</servlet-name>
+    <servlet-class>com.huanke.UploadDoc</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UploadDoc</servlet-name>
+    <url-pattern>/UploadDoc</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UploadFile</display-name>
+    <servlet-name>UploadFile</servlet-name>
+    <servlet-class>com.huanke.UploadFile</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UploadFile</servlet-name>
+    <url-pattern>/UploadFile</url-pattern>
+  </servlet-mapping>
 </web-app>
