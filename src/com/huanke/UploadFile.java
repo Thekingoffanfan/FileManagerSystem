@@ -16,8 +16,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import com.huanke.sql.DocmtSqlServiceImpl;
-import com.huanke.sql.SqlService;
+import com.huanke.dao.DocumentDao;
+import com.huanke.dao.impl.DocumentDaoImpl;
 
 /**
  * Servlet implementation class UploadServlet
@@ -29,8 +29,6 @@ public class UploadFile extends HttpServlet {
 	private static final int MEMORY_THRESHOLD = 1024 * 1024 * 3; // 3MB
 	private static final int MAX_FILE_SIZE = 1024 * 1024 * 40; // 40MB
 	private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 50; // 50MB
-	// 临时文件存储路径
-	String tempFilePath = "F:/java/workspace/FileManagerSystem_1/ServiceData/temp";
 	// 文件存储路径
 	String filePath = null;
 
@@ -48,6 +46,8 @@ public class UploadFile extends HttpServlet {
 		// 设置内存临界值 - 超过后将产生临时文件并存储于临时目录中(3M)
 		factory.setSizeThreshold(MEMORY_THRESHOLD);
 
+		System.out.println(request.getContextPath());
+		String tempFilePath = request.getContextPath() + File.separator + "temp";
 		// 设置临时存储目录，系统默认路径，F:/java/workspace/FileManagerSystem_1/ServiceData/temp”
 		factory.setRepository(new File(tempFilePath));
 
@@ -66,7 +66,7 @@ public class UploadFile extends HttpServlet {
 		String todayDateString = dateToStr(todayDate);
 		// 构造临时路径来存储上传的文件
 		// 这个路径相对当前应用的目录
-		String uploadPath = "F:/java/workspace/FileManagerSystem_1/ServiceData" + File.separator + todayDateString;
+		String uploadPath = request.getContextPath() + "/ServiceData" + File.separator + todayDateString;
 
 		// 如果目录不存在则创建
 		File uploadDir = new File(uploadPath);
@@ -83,7 +83,7 @@ public class UploadFile extends HttpServlet {
 			// 解析请求的内容提取文件数据
 			List<FileItem> formItems = upload.parseRequest(request);
 			String fieldName = null;
-			String documentName = null;
+			String fieldValue = null;
 
 			if (formItems != null && formItems.size() > 0) {
 				// 迭代表单数据
@@ -95,37 +95,41 @@ public class UploadFile extends HttpServlet {
 						filePath = uploadPath + File.separator + fileName;
 						File storeFile = new File(filePath);
 
-						// 在控制台输出文件的上传路径
-						System.out.println(storeFile.getPath());
+						// 生成绝对路径用于上传到数据库中
+						filePath = storeFile.getAbsolutePath();
+
+						System.out.println(System.getProperty("user.dir"));
+						// 在控制台输出文件的上传绝对路径
+						System.out.println(filePath);
 
 						// 保存文件到硬盘
 						item.write(storeFile);
-						System.out.println("error");
+						// 跳转回查询界面
+						out.println(
+								"<script language='javascript'>alert('文档上传成功！');window.location.href='queryInterface.jsp';</script>\n");
+						out.println("</html>");
+
 						// 处理表单中的字段
 					} else {
 						fieldName = item.getFieldName();
 						if (fieldName.equals("documentTitle")) {
-							documentName = item.getString("utf-8");
+							fieldValue = item.getString("utf-8");
 						}
 					}
 				}
 				// 标题不能为空
-				if (documentName.isEmpty()) {
-					out.println(
-							"<script language='javascript'>alert('标题不能为空！');window.location.href='upload.jsp';</script>\n");
-					out.println("</html>");
-
-					// 标题不为空时，添加到数据库lixtudy，document表中中
-				} else {
-					Document documentTitle = new Document(documentName, filePath);
-					SqlService documentSql = new DocmtSqlServiceImpl();
-					documentSql.insertData(documentTitle.getDocumentName(), documentTitle.getDocumentPath());
-				}
+				// if (fieldValue.isEmpty()) {
+				// out.println(
+				// "<script
+				// language='javascript'>alert('标题不能为空！');window.location.href='upload.jsp';</script>\n");
+				// out.println("</html>");
+				// 标题不为空时，添加到数据库lixtudy，document表中中
+				// } else {
+				Document documentTitle = new Document(fieldValue, filePath);
+				DocumentDao documentSql = new DocumentDaoImpl();
+				documentSql.addDocument(documentTitle);
+				// }
 			}
-			// 跳转回查询界面
-			out.println(
-					"<script language='javascript'>alert('文档上传成功！');window.location.href='queryInterface.jsp';</script>\n");
-			out.println("</html>");
 		} catch (Exception ex) {
 			request.setAttribute("queryInterface", "错误信息: " + ex.getMessage());
 		}

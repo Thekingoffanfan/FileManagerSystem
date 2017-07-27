@@ -1,22 +1,25 @@
-package com.huanke.sql;
+package com.huanke.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 
 import com.huanke.User;
+import com.huanke.dao.UserDao;
 
 /**
  * MySql Operation
  */
-public class UserSqlServiceImpl extends SqlBaseOperation implements SqlService {
+public class UserDaoImpl extends SqlBaseOperation implements UserDao {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public UserSqlServiceImpl() {
+	public UserDaoImpl() {
 		super();
 	}
 
@@ -25,7 +28,7 @@ public class UserSqlServiceImpl extends SqlBaseOperation implements SqlService {
 	 * 
 	 * @param user
 	 */
-	public void insertData(String name, String password) {
+	public void addUser(User user) {
 		Connection conn = null; // 一个连接对象
 		conn = this.createSqlConntection("lixtudy"); // 得到一个连接
 		PreparedStatement ps = null; // 用于插入数据a
@@ -34,8 +37,8 @@ public class UserSqlServiceImpl extends SqlBaseOperation implements SqlService {
 		String sql = "insert into checklogin(username,userpassword) values(?,?)";
 		ps = this.getPrepareStatement(conn, sql);
 		try {
-			ps.setString(1, name);
-			ps.setString(2, password);
+			ps.setString(1, user.getUserName());
+			ps.setString(2, user.getUserPassword());
 			ps.executeUpdate();
 			ps.close();
 			conn.close();
@@ -51,24 +54,26 @@ public class UserSqlServiceImpl extends SqlBaseOperation implements SqlService {
 	 *            user
 	 * @return ResultSet
 	 */
-	public ResultSet query(String user) {
+	public List<User> getUserByUsername(String username) {
+		List<User> userList = new ArrayList<User>();
 		Connection conn = this.createSqlConntection("lixtudy");
 		PreparedStatement ps = null;
-		ResultSet result = null;
-		String sql = "select * from checklogin where username = '" + user + "'";
+		ResultSet results = null;
+		String sql = "select * from checklogin where username = '" + username + "'";
 		try {
 			ps = conn.prepareStatement(sql);
-			result = ps.executeQuery();
+			results = ps.executeQuery();
+			while (results.next()) {
+				userList.add(new User(results.getString(1), results.getString(2)));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			// try {
-			// conn.close();
-			// } catch (SQLException e) {
-			// e.printStackTrace();
-			// }
+			this.closeConnection(conn);
+			this.closePreparedStatement(ps);
+			this.closeResultSet(results);
 		}
-		return result;
+		return userList;
 	}
 
 	/**
@@ -94,6 +99,12 @@ public class UserSqlServiceImpl extends SqlBaseOperation implements SqlService {
 		} else {
 			return false;
 		}
+
+	}
+
+	@Override
+	public void deletUser(User user) {
+		// TODO Auto-generated method stub
 
 	}
 }

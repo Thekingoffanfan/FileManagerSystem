@@ -1,20 +1,23 @@
-package com.huanke.sql;
+package com.huanke.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.huanke.Document;
+import com.huanke.dao.DocumentDao;
 
-public class DocmtSqlServiceImpl extends SqlBaseOperation implements SqlService {
+public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 
 	/**
 	 * 向数据库中插入数据，并会断开连接
 	 * 
 	 * @param user
 	 */
-	public void insertData(String documentTitle, String documentPath) {
+	public void addDocument(Document document) {
 		Connection conn = null; // 一个连接对象
 		conn = this.createSqlConntection("lixtudy"); // 得到一个连接
 		PreparedStatement ps = null; // 用于插入数据a
@@ -23,13 +26,14 @@ public class DocmtSqlServiceImpl extends SqlBaseOperation implements SqlService 
 		String sql = "insert into document(documentTitle,path) values(?,?)";
 		ps = this.getPrepareStatement(conn, sql);
 		try {
-			ps.setString(1, documentTitle);
-			ps.setString(2, documentPath);
+			ps.setString(1, document.getDocumentName());
+			ps.setString(2, document.getDocumentPath());
 			ps.executeUpdate();
-			ps.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			this.closeConnection(conn);
+			this.closePreparedStatement(ps);
 		}
 	}
 
@@ -40,24 +44,26 @@ public class DocmtSqlServiceImpl extends SqlBaseOperation implements SqlService 
 	 *            user
 	 * @return ResultSet
 	 */
-	public ResultSet query(String message) {
+	public List<Document> getDocByName(String DocumentTitle) {
 		Connection conn = this.createSqlConntection("lixtudy");
 		PreparedStatement ps = null;
-		ResultSet result = null;
-		String sql = "select * from document where username = '" + message + "'";
+		List<Document> documentList = new ArrayList<Document>();
+		ResultSet results = null;
+		String sql = "select * from document where username = '" + DocumentTitle + "'";
 		try {
 			ps = conn.prepareStatement(sql);
-			result = ps.executeQuery();
+			results = ps.executeQuery();
+			while (results.next()) {
+				documentList.add(new Document(results.getString(1), results.getString(2)));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			// try {
-			// conn.close();
-			// } catch (SQLException e) {
-			// e.printStackTrace();
-			// }
+			this.closeConnection(conn);
+			this.closePreparedStatement(ps);
+			this.closeResultSet(results);
 		}
-		return result;
+		return documentList;
 	}
 
 	/**
@@ -84,6 +90,30 @@ public class DocmtSqlServiceImpl extends SqlBaseOperation implements SqlService 
 			return false;
 		}
 
+	}
+
+	@Override
+	public void deletDocument(Document document) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public int allPage(int row, String DocumentTitle) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<Document> getDocumentPage(int page, int pagesize) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Document> fuzzyQuery(int page, int pagesize, String DocumentTitle) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.huanke.sql.UserSqlServiceImpl;
+import com.huanke.dao.impl.UserDaoImpl;
 
 /**
  * Servlet implementation class sql_connection
@@ -51,7 +51,7 @@ public class FileManagerSystem extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
-		Connection conn = new UserSqlServiceImpl().createSqlConntection("lixtudy");
+		Connection conn = new UserDaoImpl().createSqlConntection("lixtudy");
 		Statement stat = null;
 		PrintWriter out = response.getWriter();
 		String title = "文件管理系统";

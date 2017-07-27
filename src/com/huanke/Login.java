@@ -9,8 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.huanke.sql.Md5Encryption;
-import com.huanke.sql.UserSqlServiceImpl;
+import com.huanke.dao.UserDao;
+import com.huanke.dao.impl.Md5Encryption;
+import com.huanke.dao.impl.UserDaoImpl;
 
 /**
  * Servlet implementation class LogIn
@@ -65,11 +66,11 @@ public class Login extends HttpServlet {
 		userLogin = new User(userName, pwd);
 
 		// 数据库操作
-		UserSqlServiceImpl sqlOperation = null;
-		sqlOperation = new UserSqlServiceImpl();
+		UserDao adminOperation = null;
+		adminOperation = new UserDaoImpl();
 		// boolean checkResult = false;
 		try {
-			boolean checkResult = sqlOperation.isExist(userLogin);
+			boolean checkResult = adminOperation.isExist(userLogin);
 			if (checkResult == true) {
 				out.println("<script>alert('登录成功');window.location.href='register.jsp';</script>");
 			} else {

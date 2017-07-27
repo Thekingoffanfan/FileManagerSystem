@@ -19,7 +19,7 @@
 		<h1>文档管理系统上传界面</h1>
 		<h2>文档上传</h2>
 	</body>
-	<form action="UploadFile" method="post"  enctype="multipart/form-data">
+	<form action="UploadFile" method="post"  enctype="multipart/form-data" >
 		请输入所要上传文档的标题：<input type="text" name="documentTitle" id="documentTitle" size="30"> <br/><br/>
 		请选择所要上传的文件：<input type="file" name="document" id="document" multiple="multiple">
 		<input type="submit" name="upload" value="上传">

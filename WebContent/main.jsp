@@ -18,7 +18,7 @@ h1 {
 <body>
 	<h1>文档管理系统登录界面</h1>
 	<h2>用户登录</h2>
-	<form action="Login" method="post">
+	<form action="queryInterface.jsp" method="post">
 		用户名：<input type="text" id="userName" name="userName" size="20">
 		<br /> 密 &nbsp;&nbsp;码：<input type="password" id=userPassword name="userPassword" 
 		maxlength="20" size="20" > <br /> <br />

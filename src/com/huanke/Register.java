@@ -2,17 +2,16 @@ package com.huanke;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.huanke.sql.Md5Encryption;
-import com.huanke.sql.SqlService;
-import com.huanke.sql.UserSqlServiceImpl;
+import com.huanke.dao.UserDao;
+import com.huanke.dao.impl.Md5Encryption;
+import com.huanke.dao.impl.UserDaoImpl;
 
 /**
  * Servlet implementation class Register
@@ -63,31 +62,21 @@ public class Register extends HttpServlet {
 		User user1 = new User(inputUserName, pwd);
 
 		// 创建关于数据库操作对象
-		SqlService sqlOperation = new UserSqlServiceImpl();
+		UserDao sqlOperation = new UserDaoImpl();
 
 		// 查询匹配信息，返回结果
-		ResultSet checkUserName = null;
-		checkUserName = sqlOperation.query(user1.getUserName());
-		try {
-
-			// true则用户已存在，false说明是新用户
-			if (checkUserName.next()) {
-				out.println(
-						"<script language='javascript'>alert('该用户已存在，请重新注册！');window.location.href='register.jsp';</script>");
-				out.println("</html>");
-			} else {
-				sqlOperation.insertData(user1.getUserName(), user1.getUserPassword());
-				out.println("<script language='javascript'>alert('用户注册成功！');window.location.href='main.jsp';</script>");
-				out.println("</html>");
-			}
-		} catch (SQLException se) {
-			se.printStackTrace();
-		} finally {
-			try {
-				checkUserName.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			}
+		List<User> checkUserName = null;
+		checkUserName = sqlOperation.getUserByUsername(user1.getUserName());
+		// true则用户已存在，false说明是新用户
+		if (!checkUserName.isEmpty()) {
+			out.println(
+					"<script language='javascript'>alert('该用户已存在，请重新注册！');window.location.href='register.jsp';</script>");
+			out.println("</html>");
+		} else {
+			sqlOperation.addUser(user1);
+			out.println("<script language='javascript'>alert('用户注册成功！');window.location.href='main.jsp';</script>");
+			out.println("</html>");
 		}
+
 	}
 }

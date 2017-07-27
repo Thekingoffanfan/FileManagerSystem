@@ -1,4 +1,4 @@
-package com.huanke.sql;
+package com.huanke.dao.impl;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
