@@ -49,12 +49,12 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 		PreparedStatement ps = null;
 		List<Document> documentList = new ArrayList<Document>();
 		ResultSet results = null;
-		String sql = "select * from document where username = '" + documentTitle + "'";
+		String sql = "select * from document where id = '" + documentTitle + "'";
 		try {
 			ps = conn.prepareStatement(sql);
 			results = ps.executeQuery();
 			while (results.next()) {
-				documentList.add(new Document(results.getString(1), results.getString(2)));
+				documentList.add(new Document(results.getInt(1), results.getString(2), results.getString(3)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -93,9 +93,20 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 	}
 
 	@Override
-	public void deletDocument(Document document) {
+	public void deletDocByDocTitle(String documentTitle) {
 		// TODO Auto-generated method stub
-
+		Connection conn = this.createSqlConntection("lixtudy");
+		String sql = "delet from document where documentTitle=?";
+		PreparedStatement ps = this.getPrepareStatement(conn, sql);
+		try {
+			ps.setString(1, documentTitle);
+			ps.executeQuery();
+		} catch (SQLException se) {
+			se.printStackTrace();
+		} finally {
+			this.closeConnection(conn);
+			this.closePreparedStatement(ps);
+		}
 	}
 
 	@Override
@@ -127,7 +138,7 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 		try {
 			results = ps.executeQuery();
 			while (results.next()) {
-				documentList.add(new Document(results.getString(1), results.getString(2)));
+				documentList.add(new Document(results.getInt(1), results.getString(2), results.getString(3)));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -140,10 +151,42 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 		return documentList;
 	}
 
+	/**
+	 * 分页显示 +模糊查询(non-Javadoc)
+	 * 
+	 * @param page:页数
+	 * @param pagesize:每页显示的数量
+	 * @param gname:商品名
+	 * @return List<Document>
+	 * @see com.fruits.dao.IGoods#getGoods(int, int, java.lang.String)
+	 */
+
 	@Override
 	public List<Document> fuzzyQuery(int page, int pagesize, String documentTitle) {
 		// TODO Auto-generated method stub
-		return null;
+		List<Document> documentsList = new ArrayList<Document>();
+		String sql = "select * from document where documentTitle like '%" + documentTitle + "%' limit ?,?";
+		Connection conn = this.createSqlConntection("lixtudy");
+		PreparedStatement ps = this.getPrepareStatement(conn, sql);
+		ResultSet results = null;
+		int a = (page - 1) * pagesize;
+		int b = pagesize;
+		try {
+			ps.setInt(1, a);
+			ps.setInt(2, b);
+			results = ps.executeQuery();
+			while (results.next()) {
+				documentsList.add(new Document(results.getInt(1), results.getString(2), results.getString(3)));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			this.closeConnection(conn);
+			this.closePreparedStatement(ps);
+			this.closeResultSet(results);
+		}
+		return documentsList;
 	}
 
 }

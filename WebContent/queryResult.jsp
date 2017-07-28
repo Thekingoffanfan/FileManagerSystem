@@ -37,7 +37,8 @@
 				 Document doc = (Document)resultsIt.next();
 				 out.println("<tr><td>"+doc.getDocumentName()+"</td>");
 				 out.println("<td>"+doc.getDocumentPath()+"</td>");
-				 out.println("<td><a href='main.jsp'>删除</a></td></tr>");
+		//		 session.setAttribute(doc.getDocumentPath(), doc.getDocumentPath());
+				 out.println("<td><a href='main.jsp?id="+Doc+ "onclick="delet()">删除</a></td></tr>");
 			 }
 		 }
 		%>

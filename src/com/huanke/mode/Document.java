@@ -6,17 +6,32 @@ package com.huanke.mode;
  *
  */
 public class Document {
-	String documentName = null;
-	String documentPath = null;
+	public int dId = 1;;
+	private String documentName = null;
+	private String documentPath = null;
+
+	public Document(String documentName, String documentPath) {
+		this.documentName = documentName;
+		this.documentPath = documentPath;
+	}
 
 	/**
 	 * 
 	 * @param documentName
 	 * @param documentPath
 	 */
-	public Document(String documentName, String documentPath) {
+	public Document(int dId, String documentName, String documentPath) {
+		this.dId = dId;
 		this.documentName = documentName;
 		this.documentPath = documentPath;
+	}
+
+	public int getdId() {
+		return dId;
+	}
+
+	public void setdId(int id) {
+		this.dId = id;
 	}
 
 	/**

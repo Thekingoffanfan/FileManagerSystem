@@ -1,7 +1,6 @@
 package com.huanke;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -53,7 +52,7 @@ public class Query extends HttpServlet {
 		String condition = request.getParameter("query");
 
 		// 服务器输出流
-		PrintWriter out = response.getWriter();
+		// PrintWriter out = response.getWriter();
 
 		// 文档数据库操作
 		DocumentDao document = new DocumentDaoImpl();

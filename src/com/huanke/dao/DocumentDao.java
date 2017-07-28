@@ -8,7 +8,7 @@ public interface DocumentDao {
 
 	public void addDocument(Document document);
 
-	public void deletDocument(Document document);
+	public void deletDocByDocTitle(String documentTitle);
 
 	public List<Document> getDocByName(String documentTitle);
 

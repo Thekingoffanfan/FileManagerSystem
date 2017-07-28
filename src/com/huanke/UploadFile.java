@@ -30,8 +30,9 @@ public class UploadFile extends HttpServlet {
 	private static final int MEMORY_THRESHOLD = 1024 * 1024 * 3; // 3MB
 	private static final int MAX_FILE_SIZE = 1024 * 1024 * 40; // 40MB
 	private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 50; // 50MB
+	// private static int countDid = 1;
 	// 文件存储路径
-	String filePath = null;
+	private String filePath = null;
 
 	/**
 	 * 上传数据及保存文件
@@ -126,9 +127,15 @@ public class UploadFile extends HttpServlet {
 				// out.println("</html>");
 				// 标题不为空时，添加到数据库lixtudy，document表中中
 				// } else {
-				Document documentTitle = new Document(fieldValue, filePath);
+				Document document = new Document(fieldValue, filePath);
+				// if (countDid == 1) {
+				// document = new Document(1, fieldValue, filePath);
+				// } else {
+				// document = new Document(countDid, fieldValue, filePath);
+				// }
+				// countDid++;
 				DocumentDao documentSql = new DocumentDaoImpl();
-				documentSql.addDocument(documentTitle);
+				documentSql.addDocument(document);
 				// }
 			}
 		} catch (Exception ex) {
