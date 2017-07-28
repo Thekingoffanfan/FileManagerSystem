@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.huanke.dao.UserDao;
 import com.huanke.dao.impl.Md5Encryption;
 import com.huanke.dao.impl.UserDaoImpl;
+import com.huanke.mode.User;
 
 /**
  * Servlet implementation class LogIn

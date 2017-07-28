@@ -1,4 +1,4 @@
-package com.huanke;
+package com.huanke.mode;
 
 /**
  * 

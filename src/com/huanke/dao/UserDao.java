@@ -3,7 +3,7 @@ package com.huanke.dao;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.huanke.User;
+import com.huanke.mode.User;
 
 public interface UserDao {
 

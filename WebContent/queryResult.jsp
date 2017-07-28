@@ -25,5 +25,22 @@
 			输入查询关键字：<input type="text" name="query" id="query">
 			<input type="submit" name="querySubmit" id="querySubmit" value="查询">
 		</form>
+		<%
+			List<Document> results = (List)request.getAttribute("test");
+			if(results.isEmpty()) {
+				out.println("<script>alert('没有匹配的信息，请重新输入关键字')</script>");
+			} else {
+				 out.println("<p>查询结果</p>");
+				 out.println("<table border='1' align='center'>");
+			 	 Iterator<Document> resultsIt = results.iterator();
+				 while(resultsIt.hasNext())  {
+				 Document doc = (Document)resultsIt.next();
+				 out.println("<tr><td>"+doc.getDocumentName()+"</td>");
+				 out.println("<td>"+doc.getDocumentPath()+"</td>");
+				 out.println("<td><a href='main.jsp'>删除</a></td></tr>");
+			 }
+		 }
+		%>
+		</table>	
 	</body>
 </html>

@@ -9,8 +9,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 
-import com.huanke.User;
 import com.huanke.dao.UserDao;
+import com.huanke.mode.User;
 
 /**
  * MySql Operation

@@ -2,7 +2,7 @@ package com.huanke.dao;
 
 import java.util.List;
 
-import com.huanke.Document;
+import com.huanke.mode.Document;
 
 public interface DocumentDao {
 
@@ -10,15 +10,17 @@ public interface DocumentDao {
 
 	public void deletDocument(Document document);
 
-	List<Document> getDocByName(String DocumentTitle);
+	public List<Document> getDocByName(String documentTitle);
 
 	// 得到总页数
-	int allPage(int row, String DocumentTitle);
+	public int allPage(int row, String DocumentTitle);
 
 	// 根据分页显示
-	List<Document> getDocumentPage(int page, int pagesize);
+	public List<Document> getDocumentPage(int page, int pagesize);
+
+	public List<Document> fuzzyQuery(String condition);
 
 	// 分页显示（模糊查询）
-	List<Document> fuzzyQuery(int page, int pagesize, String DocumentTitle);
+	public List<Document> fuzzyQuery(int page, int pagesize, String documentTitle);
 
 }

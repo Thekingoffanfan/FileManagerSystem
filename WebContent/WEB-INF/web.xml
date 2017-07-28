@@ -69,4 +69,14 @@
     <servlet-name>UploadFile</servlet-name>
     <url-pattern>/UploadFile</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Query</display-name>
+    <servlet-name>Query</servlet-name>
+    <servlet-class>com.huanke.Query</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Query</servlet-name>
+    <url-pattern>/Query</url-pattern>
+  </servlet-mapping>
 </web-app>

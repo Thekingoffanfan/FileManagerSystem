@@ -18,6 +18,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.huanke.dao.DocumentDao;
 import com.huanke.dao.impl.DocumentDaoImpl;
+import com.huanke.mode.Document;
 
 /**
  * Servlet implementation class UploadServlet

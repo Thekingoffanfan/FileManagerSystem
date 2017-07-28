@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.huanke.Document;
 import com.huanke.dao.DocumentDao;
+import com.huanke.mode.Document;
 
 public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 
@@ -44,12 +44,12 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 	 *            user
 	 * @return ResultSet
 	 */
-	public List<Document> getDocByName(String DocumentTitle) {
+	public List<Document> getDocByName(String documentTitle) {
 		Connection conn = this.createSqlConntection("lixtudy");
 		PreparedStatement ps = null;
 		List<Document> documentList = new ArrayList<Document>();
 		ResultSet results = null;
-		String sql = "select * from document where username = '" + DocumentTitle + "'";
+		String sql = "select * from document where username = '" + documentTitle + "'";
 		try {
 			ps = conn.prepareStatement(sql);
 			results = ps.executeQuery();
@@ -99,7 +99,7 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 	}
 
 	@Override
-	public int allPage(int row, String DocumentTitle) {
+	public int allPage(int row, String documentTitle) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -110,8 +110,38 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 		return null;
 	}
 
+	/**
+	 * 模糊查询
+	 * 
+	 * @param String
+	 *            documentTitle 查询条件
+	 * @return List<Document> 结果集合
+	 */
+	public List<Document> fuzzyQuery(String condition) {
+		List<Document> documentList = new ArrayList<Document>();
+		Connection conn = this.createSqlConntection("lixtudy");
+		String sql = "select * from document where documentTitle like  '%" + condition + "%' ";
+		PreparedStatement ps = null;
+		ResultSet results = null;
+		ps = this.getPrepareStatement(conn, sql);
+		try {
+			results = ps.executeQuery();
+			while (results.next()) {
+				documentList.add(new Document(results.getString(1), results.getString(2)));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			this.closeConnection(conn);
+			this.closePreparedStatement(ps);
+			this.closeResultSet(results);
+		}
+		return documentList;
+	}
+
 	@Override
-	public List<Document> fuzzyQuery(int page, int pagesize, String DocumentTitle) {
+	public List<Document> fuzzyQuery(int page, int pagesize, String documentTitle) {
 		// TODO Auto-generated method stub
 		return null;
 	}
