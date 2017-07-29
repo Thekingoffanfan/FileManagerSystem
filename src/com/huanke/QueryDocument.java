@@ -16,13 +16,13 @@ import com.huanke.mode.Document;
 /**
  * Servlet implementation class Query
  */
-public class Query extends HttpServlet {
+public class QueryDocument extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public Query() {
+	public QueryDocument() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -64,7 +64,7 @@ public class Query extends HttpServlet {
 		// 将数据发到JSP
 		RequestDispatcher rd = request.getRequestDispatcher("/queryResult.jsp");
 		request.setAttribute("test", results);// 存值
-		System.out.println("chenggong");
+		// System.out.println("chenggong");
 		rd.forward(request, response);// 开始跳转
 	}
 

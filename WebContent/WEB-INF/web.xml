@@ -71,12 +71,22 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>Query</display-name>
-    <servlet-name>Query</servlet-name>
-    <servlet-class>com.huanke.Query</servlet-class>
+    <display-name>QueryDocument</display-name>
+    <servlet-name>QueryDocument</servlet-name>
+    <servlet-class>com.huanke.QueryDocument</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Query</servlet-name>
-    <url-pattern>/Query</url-pattern>
+    <servlet-name>QueryDocument</servlet-name>
+    <url-pattern>/QueryDocument</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>DeleteDocument</display-name>
+    <servlet-name>DeleteDocument</servlet-name>
+    <servlet-class>com.huanke.DeleteDocument</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteDocument</servlet-name>
+    <url-pattern>/DeleteDocument</url-pattern>
   </servlet-mapping>
 </web-app>

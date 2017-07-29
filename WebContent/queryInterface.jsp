@@ -21,7 +21,7 @@
 	<body>
 		<h1>文档管理系统查询界面</h1>
 		<h2>用户查询</h2>
-		<form action="Query" method="post">
+		<form action="QueryDocument" method="post">
 			输入查询关键字：<input type="text" name="query" id="query">
 			<input type="submit" name="querySubmit" id="querySubmit" value="查询">
 		</form>

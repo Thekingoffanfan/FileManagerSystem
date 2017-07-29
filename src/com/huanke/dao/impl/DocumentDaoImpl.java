@@ -44,14 +44,15 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 	 *            user
 	 * @return ResultSet
 	 */
-	public List<Document> getDocByName(String documentTitle) {
+	public List<Document> getDocById(int documentId) {
 		Connection conn = this.createSqlConntection("lixtudy");
 		PreparedStatement ps = null;
 		List<Document> documentList = new ArrayList<Document>();
 		ResultSet results = null;
-		String sql = "select * from document where id = '" + documentTitle + "'";
+		String sql = "select * from document where id = ?";
 		try {
 			ps = conn.prepareStatement(sql);
+			ps.setInt(1, documentId);
 			results = ps.executeQuery();
 			while (results.next()) {
 				documentList.add(new Document(results.getInt(1), results.getString(2), results.getString(3)));
@@ -73,6 +74,7 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 	 * @return boolean
 	 * @throws SQLException
 	 */
+
 	public boolean isExist(Document document) throws SQLException {
 		Connection conn = this.createSqlConntection("lixtudy");
 		PreparedStatement queryUser = null;
@@ -93,13 +95,13 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 	}
 
 	@Override
-	public void deletDocByDocTitle(String documentTitle) {
+	public void deletDocById(int documentId) {
 		// TODO Auto-generated method stub
 		Connection conn = this.createSqlConntection("lixtudy");
-		String sql = "delet from document where documentTitle=?";
+		String sql = "delet from document where id=?";
 		PreparedStatement ps = this.getPrepareStatement(conn, sql);
 		try {
-			ps.setString(1, documentTitle);
+			ps.setInt(1, documentId);
 			ps.executeQuery();
 		} catch (SQLException se) {
 			se.printStackTrace();

@@ -8,9 +8,9 @@ public interface DocumentDao {
 
 	public void addDocument(Document document);
 
-	public void deletDocByDocTitle(String documentTitle);
+	public void deletDocById(int documenId);
 
-	public List<Document> getDocByName(String documentTitle);
+	public List<Document> getDocById(int documentId);
 
 	// 得到总页数
 	public int allPage(int row, String DocumentTitle);

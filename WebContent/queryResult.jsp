@@ -17,16 +17,24 @@
 			color: red
 		}
 	</style>
+	<script>
+	function deletDocument() {
+		  if(confirm("确定要删除该题目？")){
+		    	return true;
+		    }
+	}
+	</script>
 	</head>
 	<body>
 		<h1>文档管理系统查询界面</h1>
 		<h2>用户查询</h2>
-		<form action="Query" method="post">
+		<form action="QueryDocument" method="post">
 			输入查询关键字：<input type="text" name="query" id="query">
 			<input type="submit" name="querySubmit" id="querySubmit" value="查询">
 		</form>
 		<%
 			List<Document> results = (List)request.getAttribute("test");
+		    session.setAttribute("sendResults",results);
 			if(results.isEmpty()) {
 				out.println("<script>alert('没有匹配的信息，请重新输入关键字')</script>");
 			} else {
@@ -38,10 +46,10 @@
 				 out.println("<tr><td>"+doc.getDocumentName()+"</td>");
 				 out.println("<td>"+doc.getDocumentPath()+"</td>");
 		//		 session.setAttribute(doc.getDocumentPath(), doc.getDocumentPath());
-				 out.println("<td><a href='main.jsp?id="+Doc+ "onclick="delet()">删除</a></td></tr>");
+				 out.println("<td><a href='DeleteDocument?id="+doc.getdId()+"' onclick='deletDocument()'>删除</a></td></tr>");
 			 }
+			 out.println("</table>");
 		 }
 		%>
-		</table>	
 	</body>
 </html>
