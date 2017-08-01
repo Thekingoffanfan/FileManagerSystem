@@ -67,33 +67,6 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 		return documentList;
 	}
 
-	/**
-	 * 检测是否有与输入匹配的信息
-	 * 
-	 * @param User
-	 * @return boolean
-	 * @throws SQLException
-	 */
-
-	public boolean isExist(Document document) throws SQLException {
-		Connection conn = this.createSqlConntection("lixtudy");
-		PreparedStatement queryUser = null;
-		ResultSet resultOfQueryUser = null;
-		String sql = "select * from document where username='" + document.getDocumentName() + "'and userpassword='"
-				+ document.getDocumentPath() + "'";
-		queryUser = conn.prepareStatement(sql);
-		resultOfQueryUser = queryUser.executeQuery();
-		if (resultOfQueryUser.next()) {
-			this.closeResultSet(resultOfQueryUser);
-			this.closePreparedStatement(queryUser);
-			this.closeConnection(conn);
-			return true;
-		} else {
-			return false;
-		}
-
-	}
-
 	@Override
 	public void deletDocById(int documentId) {
 		// TODO Auto-generated method stub

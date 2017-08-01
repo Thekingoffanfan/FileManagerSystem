@@ -13,6 +13,9 @@ body {
 h1 {
 	color: red
 }
+a {
+  color:blue;
+}
 </style>
 </head>
 <body>
@@ -24,6 +27,7 @@ h1 {
 		maxlength="20" size="20" > <br /> <br />
 			 <input type="submit"  name="logIn" id="logIn" value="登录"> 
 			 <input type="button" onclick="window.location.href='register.jsp'" onclick="openpage()" value="注册">
-	</form>
+	</form><br/>
+	<a href='startPage.jsp'>导航页</a>	
 	</body>
 </html>

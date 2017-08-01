@@ -13,6 +13,9 @@
 			h1 {
 				color: red
 			}
+			a {
+  				color:blue;
+			}
 		</style>
 	</head>
 	<body>
@@ -23,5 +26,6 @@
 		请输入所要上传文档的标题：<input type="text" name="documentTitle" id="documentTitle" size="30"> <br/><br/>
 		请选择所要上传的文件：<input type="file" name="document" id="document" multiple="multiple">
 		<input type="submit" name="upload" value="上传">
-	</form>
+	</form><br/>
+	<a href='startPage.jsp'>导航页</a>	
 </html>

@@ -36,6 +36,7 @@ function addCheck(){
 	<style type="text/css">
  		h1 {color: red}
 		body {text-align: center}
+		a {  color:blue;}
 	</style>
 </head>
 	<body>
@@ -46,6 +47,7 @@ function addCheck(){
 			密&nbsp;&nbsp;码：<input type="password" name="addPassword" id="addPassword"><br><br>
 			确认密码：<input type="password" name="checkPassword" id="checkPassword"><br><br>
 			<input type="submit" name="signIn" id="signIn" value="注册">
-		</form>   
+		</form><br/>
+	<a href='startPage.jsp'>导航页</a>	
 	</body>
 </html>
