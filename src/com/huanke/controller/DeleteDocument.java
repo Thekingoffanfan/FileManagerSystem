@@ -1,8 +1,7 @@
-package com.huanke;
+package com.huanke.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.huanke.dao.DocumentDao;
 import com.huanke.dao.impl.DocumentDaoImpl;
-import com.huanke.mode.Document;
+import com.huanke.model.Document;
 
 /**
  * Servlet implementation class DeleteDocument
@@ -39,9 +38,6 @@ public class DeleteDocument extends HttpServlet {
 		// 统一编码格式为"utf-8"
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
-
-		// 服务器输出流
-		PrintWriter out = response.getWriter();
 
 		// 获得要删除文档的id
 		String tempDocumentId = request.getParameter("id");
@@ -71,6 +67,7 @@ public class DeleteDocument extends HttpServlet {
 
 		// 把删除后的查询结果传给queryResults.jsp，并返回
 		request.setAttribute("test", deleteDoc);
+		request.setAttribute("feedback", "删除成功！");
 		request.getRequestDispatcher("/queryResult.jsp").forward(request, response);
 
 	}

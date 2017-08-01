@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.huanke.dao.DocumentDao;
-import com.huanke.mode.Document;
+import com.huanke.model.Document;
 
 public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 
@@ -24,7 +24,7 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 
 		// sql语句，向表user里面，插入name和pass的值
 		String sql = "insert into document(documentTitle,path) values(?,?)";
-		ps = this.getPrepareStatement(conn, sql);
+		ps = this.getPreparedStatement(conn, sql);
 		try {
 			ps.setString(1, document.getDocumentName());
 			ps.setString(2, document.getDocumentPath());
@@ -98,11 +98,11 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 	public void deletDocById(int documentId) {
 		// TODO Auto-generated method stub
 		Connection conn = this.createSqlConntection("lixtudy");
-		String sql = "delet from document where id=?";
-		PreparedStatement ps = this.getPrepareStatement(conn, sql);
+		String sql = "delete from document where id=?";
+		PreparedStatement ps = this.getPreparedStatement(conn, sql);
 		try {
 			ps.setInt(1, documentId);
-			ps.executeQuery();
+			ps.executeUpdate();
 		} catch (SQLException se) {
 			se.printStackTrace();
 		} finally {
@@ -111,10 +111,36 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 		}
 	}
 
+	/**
+	 * 计算出分页以后的总页数，需要程动态计算
+	 * 
+	 * @param row
+	 *            每页想要记录的行数，用户自己规定
+	 * @param documentTitle
+	 *            查询的关键字，用于查询出总的记录条数
+	 */
 	@Override
 	public int allPage(int row, String documentTitle) {
-		// TODO Auto-generated method stub
-		return 0;
+		int rowCount = 0;
+		Connection conn = this.createSqlConntection("lixtudy");
+		PreparedStatement ps = null;
+		ResultSet results = null;
+		String sql = "select count(documentTitle) from document where documentTitle like '%" + documentTitle + "%'";
+		ps = this.getPreparedStatement(conn, sql);
+		try {
+			results = ps.executeQuery();
+			if (results.next()) {
+				rowCount = results.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			this.closeConnection(conn);
+			this.closePreparedStatement(ps);
+			this.closeResultSet(results);
+		}
+		return (rowCount - 1) / row + 1;
 	}
 
 	@Override
@@ -136,7 +162,7 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 		String sql = "select * from document where documentTitle like  '%" + condition + "%' ";
 		PreparedStatement ps = null;
 		ResultSet results = null;
-		ps = this.getPrepareStatement(conn, sql);
+		ps = this.getPreparedStatement(conn, sql);
 		try {
 			results = ps.executeQuery();
 			while (results.next()) {
@@ -169,7 +195,7 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 		List<Document> documentsList = new ArrayList<Document>();
 		String sql = "select * from document where documentTitle like '%" + documentTitle + "%' limit ?,?";
 		Connection conn = this.createSqlConntection("lixtudy");
-		PreparedStatement ps = this.getPrepareStatement(conn, sql);
+		PreparedStatement ps = this.getPreparedStatement(conn, sql);
 		ResultSet results = null;
 		int a = (page - 1) * pagesize;
 		int b = pagesize;

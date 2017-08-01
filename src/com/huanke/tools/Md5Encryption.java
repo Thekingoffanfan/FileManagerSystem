@@ -1,4 +1,4 @@
-package com.huanke.dao.impl;
+package com.huanke.tools;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -22,7 +22,7 @@ public class Md5Encryption {
 		String password = null;
 		try {
 			md5Sequence = encodeMd5(message);
-			password = bytes2HexString(md5Sequence);
+			password = Bytes2HexString.bytes2HexString(md5Sequence);
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -42,18 +42,5 @@ public class Md5Encryption {
 		MessageDigest md5 = MessageDigest.getInstance("MD5");
 		md5.update(obj);
 		return md5.digest();
-	}
-
-	// 将数组转成16进制string
-	public static String bytes2HexString(byte[] b) {
-		String ret = "";
-		for (int i = 0; i < b.length; i++) {
-			String hex = Integer.toHexString(b[i] & 0xFF);
-			if (hex.length() == 1) {
-				hex = '0' + hex;
-			}
-			ret += hex;
-		}
-		return ret;
 	}
 }

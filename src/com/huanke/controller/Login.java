@@ -1,4 +1,4 @@
-package com.huanke;
+package com.huanke.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.huanke.dao.UserDao;
-import com.huanke.dao.impl.Md5Encryption;
 import com.huanke.dao.impl.UserDaoImpl;
-import com.huanke.mode.User;
+import com.huanke.model.User;
+import com.huanke.tools.Md5Encryption;
 
 /**
  * Servlet implementation class LogIn
@@ -73,7 +73,7 @@ public class Login extends HttpServlet {
 		try {
 			boolean checkResult = adminOperation.isExist(userLogin);
 			if (checkResult == true) {
-				out.println("<script>alert('登录成功');window.location.href='register.jsp';</script>");
+				out.println("<script>alert('登录成功');window.location.href='queryResult.jsp';</script>");
 			} else {
 				out.println("<script>alert('用户名或密码错误！');window.location.href='main.jsp';</script> ");
 			}

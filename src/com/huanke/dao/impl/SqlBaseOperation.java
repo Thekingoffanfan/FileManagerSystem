@@ -81,7 +81,7 @@ public class SqlBaseOperation {
 	 * @param String
 	 * @return PreparedStatement
 	 */
-	public PreparedStatement getPrepareStatement(Connection conn, String sql) {
+	public PreparedStatement getPreparedStatement(Connection conn, String sql) {
 		PreparedStatement pps = null;
 		try {
 			pps = conn.prepareStatement(sql);

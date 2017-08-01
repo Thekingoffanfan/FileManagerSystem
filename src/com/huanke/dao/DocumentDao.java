@@ -2,7 +2,7 @@ package com.huanke.dao;
 
 import java.util.List;
 
-import com.huanke.mode.Document;
+import com.huanke.model.Document;
 
 public interface DocumentDao {
 

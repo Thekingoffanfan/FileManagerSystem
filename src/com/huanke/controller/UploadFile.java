@@ -1,4 +1,4 @@
-package com.huanke;
+package com.huanke.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.huanke.dao.DocumentDao;
 import com.huanke.dao.impl.DocumentDaoImpl;
-import com.huanke.mode.Document;
+import com.huanke.model.Document;
 
 /**
  * Servlet implementation class UploadServlet
@@ -108,7 +108,7 @@ public class UploadFile extends HttpServlet {
 						item.write(storeFile);
 						// 跳转回查询界面
 						out.println(
-								"<script language='javascript'>alert('文档上传成功！');window.location.href='queryInterface.jsp';</script>\n");
+								"<script language='javascript'>alert('文档上传成功！');window.location.href='queryResult.jsp';</script>\n");
 						out.println("</html>");
 
 						// 处理表单中的字段
@@ -119,27 +119,12 @@ public class UploadFile extends HttpServlet {
 						}
 					}
 				}
-				// 标题不能为空
-				// if (fieldValue.isEmpty()) {
-				// out.println(
-				// "<script
-				// language='javascript'>alert('标题不能为空！');window.location.href='upload.jsp';</script>\n");
-				// out.println("</html>");
-				// 标题不为空时，添加到数据库lixtudy，document表中中
-				// } else {
 				Document document = new Document(fieldValue, filePath);
-				// if (countDid == 1) {
-				// document = new Document(1, fieldValue, filePath);
-				// } else {
-				// document = new Document(countDid, fieldValue, filePath);
-				// }
-				// countDid++;
 				DocumentDao documentSql = new DocumentDaoImpl();
 				documentSql.addDocument(document);
-				// }
 			}
 		} catch (Exception ex) {
-			request.setAttribute("queryInterface", "错误信息: " + ex.getMessage());
+			request.setAttribute("queryResult", "错误信息: " + ex.getMessage());
 		}
 	}
 

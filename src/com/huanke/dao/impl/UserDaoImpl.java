@@ -10,7 +10,7 @@ import java.util.List;
 import javax.servlet.http.HttpServlet;
 
 import com.huanke.dao.UserDao;
-import com.huanke.mode.User;
+import com.huanke.model.User;
 
 /**
  * MySql Operation
@@ -35,7 +35,7 @@ public class UserDaoImpl extends SqlBaseOperation implements UserDao {
 
 		// sql语句，向表user里面，插入name和pass的值
 		String sql = "insert into checklogin(username,userpassword) values(?,?)";
-		ps = this.getPrepareStatement(conn, sql);
+		ps = this.getPreparedStatement(conn, sql);
 		try {
 			ps.setString(1, user.getUserName());
 			ps.setString(2, user.getUserPassword());

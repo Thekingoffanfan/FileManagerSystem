@@ -13,7 +13,7 @@
     <description></description>
     <display-name>FileManagerSystem</display-name>
     <servlet-name>FileManagerSystem</servlet-name>
-    <servlet-class>com.huanke.FileManagerSystem</servlet-class>
+    <servlet-class>com.huanke.controller.FileManagerSystem</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>FileManagerSystem</servlet-name>
@@ -21,19 +21,9 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>sql_connection</display-name>
-    <servlet-name>sql_connection</servlet-name>
-    <servlet-class>com.huanke.sql.sql_connection</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>sql_connection</servlet-name>
-    <url-pattern>/sql_connection</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
     <display-name>Register</display-name>
     <servlet-name>Register</servlet-name>
-    <servlet-class>com.huanke.Register</servlet-class>
+    <servlet-class>com.huanke.controller.Register</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Register</servlet-name>
@@ -43,7 +33,7 @@
     <description></description>
     <display-name>Login</display-name>
     <servlet-name>Login</servlet-name>
-    <servlet-class>com.huanke.Login</servlet-class>
+    <servlet-class>com.huanke.controller.Login</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Login</servlet-name>
@@ -51,19 +41,9 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>UploadDoc</display-name>
-    <servlet-name>UploadDoc</servlet-name>
-    <servlet-class>com.huanke.UploadDoc</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>UploadDoc</servlet-name>
-    <url-pattern>/UploadDoc</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
     <display-name>UploadFile</display-name>
     <servlet-name>UploadFile</servlet-name>
-    <servlet-class>com.huanke.UploadFile</servlet-class>
+    <servlet-class>com.huanke.controller.UploadFile</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>UploadFile</servlet-name>
@@ -73,7 +53,7 @@
     <description></description>
     <display-name>QueryDocument</display-name>
     <servlet-name>QueryDocument</servlet-name>
-    <servlet-class>com.huanke.QueryDocument</servlet-class>
+    <servlet-class>com.huanke.controller.QueryDocument</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>QueryDocument</servlet-name>
@@ -83,7 +63,7 @@
     <description></description>
     <display-name>DeleteDocument</display-name>
     <servlet-name>DeleteDocument</servlet-name>
-    <servlet-class>com.huanke.DeleteDocument</servlet-class>
+    <servlet-class>com.huanke.controller.DeleteDocument</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>DeleteDocument</servlet-name>
