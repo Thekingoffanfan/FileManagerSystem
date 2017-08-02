@@ -11,7 +11,7 @@ public interface UserDao {
 
 	public void deletUser(User user);
 
-	public List<User> getUserByUsername(String message);
+	public List<User> getUserByUserName(String userName);
 
 	public boolean isExist(User user) throws SQLException;
 }

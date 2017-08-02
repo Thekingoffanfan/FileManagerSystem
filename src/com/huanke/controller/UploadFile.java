@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +31,6 @@ public class UploadFile extends HttpServlet {
 	private static final int MEMORY_THRESHOLD = 1024 * 1024 * 3; // 3MB
 	private static final int MAX_FILE_SIZE = 1024 * 1024 * 40; // 40MB
 	private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 50; // 50MB
-	// private static int countDid = 1;
 	// 文件存储路径
 	private String filePath = null;
 
@@ -41,14 +41,20 @@ public class UploadFile extends HttpServlet {
 			throws ServletException, IOException {
 
 		request.setCharacterEncoding("utf-8");
-		response.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
+
+		// 获得登录用户名的Id
+		int userId = 0;
+		if (request.getSession().getAttribute("userId") != null) {
+			userId = (Integer) request.getSession().getAttribute("userId");
+		}
+		System.out.println(userId);
 		// 配置上传参数
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		// 设置内存临界值 - 超过后将产生临时文件并存储于临时目录中(3M)
 		factory.setSizeThreshold(MEMORY_THRESHOLD);
 
-		System.out.println(request.getContextPath());
+		// System.out.println(request.getContextPath());
 		String tempFilePath = request.getContextPath() + File.separator + "temp";
 		// 设置临时存储目录，系统默认路径，F:/java/workspace/FileManagerSystem_1/ServiceData/temp”
 		factory.setRepository(new File(tempFilePath));
@@ -86,6 +92,8 @@ public class UploadFile extends HttpServlet {
 			List<FileItem> formItems = upload.parseRequest(request);
 			String fieldName = null;
 			String fieldValue = null;
+			// 存放每一个上传的文件路径
+			List<String> filePathesList = new ArrayList<String>();
 
 			if (formItems != null && formItems.size() > 0) {
 				// 迭代表单数据
@@ -94,22 +102,26 @@ public class UploadFile extends HttpServlet {
 					// 处理不在表单中的字段
 					if (!item.isFormField()) {
 						String fileName = new File(item.getName()).getName();
-						filePath = uploadPath + File.separator + fileName;
-						File storeFile = new File(filePath);
 
-						// 生成绝对路径用于上传到数据库中
-						filePath = storeFile.getAbsolutePath();
+						if (!fileName.isEmpty()) {
+							filePath = uploadPath + File.separator + fileName;
+							File storeFile = new File(filePath);
 
-						System.out.println(System.getProperty("user.dir"));
-						// 在控制台输出文件的上传绝对路径
-						System.out.println(filePath);
+							// 生成绝对路径用于上传到数据库中
+							filePath = storeFile.getAbsolutePath();
 
-						// 保存文件到硬盘
-						item.write(storeFile);
-						// 跳转回查询界面
-						out.println(
-								"<script language='javascript'>alert('文档上传成功！');window.location.href='queryResult.jsp';</script>\n");
-						out.println("</html>");
+							// System.out.println(System.getProperty("user.dir"));
+							// 在控制台输出文件的上传绝对路径
+							filePathesList.add(filePath);
+							System.out.println(filePath);
+
+							// 保存文件到硬盘
+							item.write(storeFile);
+							// 跳转回查询界面
+							out.println(
+									"<script language='javascript'>alert('文档上传成功！');window.location.href='queryResult.jsp';</script>\n");
+							out.println("</html>");
+						}
 
 						// 处理表单中的字段
 					} else {
@@ -119,11 +131,15 @@ public class UploadFile extends HttpServlet {
 						}
 					}
 				}
-				Document document = new Document(fieldValue, filePath);
-				DocumentDao documentSql = new DocumentDaoImpl();
-				documentSql.addDocument(document);
+				for (String filePath : filePathesList) {
+					Document document = new Document(userId, fieldValue, filePath, "md5");
+					DocumentDao documentSql = new DocumentDaoImpl();
+					documentSql.addDocument(document);
+				}
 			}
-		} catch (Exception ex) {
+		} catch (
+
+		Exception ex) {
 			request.setAttribute("queryResult", "错误信息: " + ex.getMessage());
 		}
 	}

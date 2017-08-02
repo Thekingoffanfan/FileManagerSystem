@@ -67,7 +67,7 @@ public class Register extends HttpServlet {
 
 		// 查询匹配信息，返回结果
 		List<User> checkUserName = null;
-		checkUserName = sqlOperation.getUserByUsername(user1.getUserName());
+		checkUserName = sqlOperation.getUserByUserName(user1.getUserName());
 		// true则用户已存在，false说明是新用户
 		if (!checkUserName.isEmpty()) {
 			out.println(

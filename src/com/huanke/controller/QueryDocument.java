@@ -47,6 +47,11 @@ public class QueryDocument extends HttpServlet {
 
 		// 从表单中获得查询条件
 		String condition = request.getParameter("query");
+		int userId = 0;
+		if (request.getSession().getAttribute("userId") != null) {
+			userId = (Integer) request.getSession().getAttribute("userId");
+		}
+		System.out.println(userId);
 		// 文档数据库操作
 		DocumentDao document = new DocumentDaoImpl();
 		List<Document> results = null;
@@ -57,23 +62,20 @@ public class QueryDocument extends HttpServlet {
 		}
 
 		// 获得记录总页数
-		pageCount = document.allPage(pageSize, condition);
+		pageCount = document.allPage(pageSize, userId, condition);
 		// 分页加模糊查询
-		results = document.fuzzyQuery(pageNow, pageSize, condition);
+		results = document.fuzzyQuery(pageNow, pageSize, userId, condition);
 
 		// results = document.fuzzyQuery(condition);
 
 		// 如果没有匹配到信息，反馈报错信息
 		if (results.isEmpty()) {
 			request.setAttribute("feedback", "没有匹配的信息，请重新输入关键字！");
-			System.out.println("pipei");
 		}
 		// 将数据发到JSP
 		RequestDispatcher rd = request.getRequestDispatcher("/queryResult.jsp");
 		request.setAttribute("pageCount", pageCount);
 		request.setAttribute("value", condition);
-		System.out.println(condition);
-		System.out.println(pageNow);
 		request.setAttribute("pageNow", pageNow);
 		request.setAttribute("results", results);// 存值
 		rd.forward(request, response);// 开始跳转

@@ -54,17 +54,17 @@ public class UserDaoImpl extends SqlBaseOperation implements UserDao {
 	 *            user
 	 * @return ResultSet
 	 */
-	public List<User> getUserByUsername(String username) {
+	public List<User> getUserByUserName(String userName) {
 		List<User> userList = new ArrayList<User>();
 		Connection conn = this.createSqlConntection("lixtudy");
 		PreparedStatement ps = null;
 		ResultSet results = null;
-		String sql = "select * from checklogin where username = '" + username + "'";
+		String sql = "select * from checklogin where username = '" + userName + "'";
 		try {
 			ps = conn.prepareStatement(sql);
 			results = ps.executeQuery();
 			while (results.next()) {
-				userList.add(new User(results.getString(1), results.getString(2)));
+				userList.add(new User(results.getInt(1), results.getString(2), results.getString(3)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

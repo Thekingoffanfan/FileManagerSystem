@@ -3,11 +3,14 @@ package com.huanke.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.huanke.dao.UserDao;
 import com.huanke.dao.impl.UserDaoImpl;
@@ -73,6 +76,20 @@ public class Login extends HttpServlet {
 		try {
 			boolean checkResult = adminOperation.isExist(userLogin);
 			if (checkResult == true) {
+
+				// 由用户名得到唯一标识userId
+				int userId = 0;
+				if (userName != null) {
+					UserDao userOperation = new UserDaoImpl();
+					List<User> usersList = new ArrayList<User>();
+					usersList = userOperation.getUserByUserName(userName);
+					for (User user : usersList) {
+						userId = user.getUserId();
+					}
+				}
+				HttpSession session = request.getSession();
+				session.setAttribute("userInfo", userName);
+				session.setAttribute("userId", userId);
 				out.println("<script>alert('登录成功');window.location.href='queryResult.jsp';</script>");
 			} else {
 				out.println("<script>alert('用户名或密码错误！');window.location.href='main.jsp';</script> ");

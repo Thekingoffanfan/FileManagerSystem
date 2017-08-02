@@ -23,11 +23,13 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 		PreparedStatement ps = null; // 用于插入数据a
 
 		// sql语句，向表user里面，插入name和pass的值
-		String sql = "insert into document(documentTitle,path) values(?,?)";
+		String sql = "insert into document(userId,documentTitle,path,md5) values(?,?,?,?)";
 		ps = this.getPreparedStatement(conn, sql);
 		try {
-			ps.setString(1, document.getDocumentName());
-			ps.setString(2, document.getDocumentPath());
+			ps.setInt(1, document.getUserId());
+			ps.setString(2, document.getDocumentName());
+			ps.setString(3, document.getDocumentPath());
+			ps.setString(4, document.getMd5());
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -44,18 +46,20 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 	 *            user
 	 * @return ResultSet
 	 */
-	public List<Document> getDocById(int documentId) {
+	public List<Document> getDocById(int userId, int documentId) {
 		Connection conn = this.createSqlConntection("lixtudy");
 		PreparedStatement ps = null;
 		List<Document> documentList = new ArrayList<Document>();
 		ResultSet results = null;
-		String sql = "select * from document where id = ?";
+		String sql = "select * from document where id = ? and userId = ?";
 		try {
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, documentId);
+			ps.setInt(2, userId);
 			results = ps.executeQuery();
 			while (results.next()) {
-				documentList.add(new Document(results.getInt(1), results.getString(2), results.getString(3)));
+				documentList.add(new Document(results.getInt(1), results.getInt(2), results.getString(3),
+						results.getString(4), results.getString(5)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -93,14 +97,16 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 	 *            查询的关键字，用于查询出总的记录条数
 	 */
 	@Override
-	public int allPage(int row, String documentTitle) {
+	public int allPage(int row, int userId, String documentTitle) {
 		int rowCount = 0;
 		Connection conn = this.createSqlConntection("lixtudy");
 		PreparedStatement ps = null;
 		ResultSet results = null;
-		String sql = "select count(documentTitle) from document where documentTitle like '%" + documentTitle + "%'";
+		String sql = "select count(documentTitle) from document where documentTitle like '%" + documentTitle
+				+ "%' and userId = ?";
 		ps = this.getPreparedStatement(conn, sql);
 		try {
+			ps.setInt(1, userId);
 			results = ps.executeQuery();
 			if (results.next()) {
 				rowCount = results.getInt(1);
@@ -116,42 +122,6 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 		return (rowCount - 1) / row + 1;
 	}
 
-	@Override
-	public List<Document> getDocumentPage(int page, int pagesize) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 * 模糊查询
-	 * 
-	 * @param String
-	 *            documentTitle 查询条件
-	 * @return List<Document> 结果集合
-	 */
-	public List<Document> fuzzyQuery(String condition) {
-		List<Document> documentList = new ArrayList<Document>();
-		Connection conn = this.createSqlConntection("lixtudy");
-		String sql = "select * from document where documentTitle like  '%" + condition + "%' ";
-		PreparedStatement ps = null;
-		ResultSet results = null;
-		ps = this.getPreparedStatement(conn, sql);
-		try {
-			results = ps.executeQuery();
-			while (results.next()) {
-				documentList.add(new Document(results.getInt(1), results.getString(2), results.getString(3)));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			this.closeConnection(conn);
-			this.closePreparedStatement(ps);
-			this.closeResultSet(results);
-		}
-		return documentList;
-	}
-
 	/**
 	 * 分页显示 +模糊查询(non-Javadoc)
 	 * 
@@ -163,21 +133,24 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 	 */
 
 	@Override
-	public List<Document> fuzzyQuery(int page, int pagesize, String documentTitle) {
+	public List<Document> fuzzyQuery(int page, int pagesize, int userId, String documentTitle) {
 		// TODO Auto-generated method stub
 		List<Document> documentsList = new ArrayList<Document>();
-		String sql = "select * from document where documentTitle like '%" + documentTitle + "%' limit ?,?";
+		String sql = "select * from document where documentTitle like '%" + documentTitle
+				+ "%'and userId = ? limit ?,?";
 		Connection conn = this.createSqlConntection("lixtudy");
 		PreparedStatement ps = this.getPreparedStatement(conn, sql);
 		ResultSet results = null;
 		int a = (page - 1) * pagesize;
 		int b = pagesize;
 		try {
-			ps.setInt(1, a);
-			ps.setInt(2, b);
+			ps.setInt(1, userId);
+			ps.setInt(2, a);
+			ps.setInt(3, b);
 			results = ps.executeQuery();
 			while (results.next()) {
-				documentsList.add(new Document(results.getInt(1), results.getString(2), results.getString(3)));
+				documentsList.add(new Document(results.getInt(1), results.getInt(2), results.getString(3),
+						results.getString(4), results.getString(5)));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -189,5 +162,4 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 		}
 		return documentsList;
 	}
-
 }

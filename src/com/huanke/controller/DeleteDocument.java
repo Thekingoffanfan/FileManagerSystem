@@ -43,21 +43,15 @@ public class DeleteDocument extends HttpServlet {
 		String tempDocumentId = request.getParameter("id");
 		int documentId = Integer.parseInt(tempDocumentId);
 
-		// String value = request
-		// 从查询结果中把要删除的信息删除
-		// List<Document> deleteDoc = (List<Document>)
-		// request.getSession().getAttribute("sendResults");
-		// Iterator<Document> deleteDocIt = deleteDoc.iterator();
-		// while (deleteDocIt.hasNext()) {
-		// Document doc = deleteDocIt.next();
-		// if (doc.getdId() == documentId) {
-		// deleteDocIt.remove();
-		// }
-		// }
+		// 获得登录用户名的Id
+		int userId = 0;
+		if (request.getSession().getAttribute("userId") != null) {
+			userId = (Integer) request.getSession().getAttribute("userId");
+		}
 
 		// 查找出要删除文档的path，并删除
 		DocumentDao deleteDocument = new DocumentDaoImpl();
-		List<Document> documentsList = deleteDocument.getDocById(documentId);
+		List<Document> documentsList = deleteDocument.getDocById(userId, documentId);
 		Iterator<Document> documentsIt = documentsList.iterator();
 		while (documentsIt.hasNext()) {
 			Document document = documentsIt.next();
