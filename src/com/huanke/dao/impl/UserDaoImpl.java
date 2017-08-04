@@ -97,6 +97,9 @@ public class UserDaoImpl extends SqlBaseOperation implements UserDao {
 			this.closeConnection(conn);
 			return true;
 		} else {
+			this.closeResultSet(resultOfQueryUser);
+			this.closePreparedStatement(queryUser);
+			this.closeConnection(conn);
 			return false;
 		}
 

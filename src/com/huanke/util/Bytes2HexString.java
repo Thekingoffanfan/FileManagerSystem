@@ -1,4 +1,4 @@
-package com.huanke.tools;
+package com.huanke.util;
 
 public class Bytes2HexString {
 

@@ -2,9 +2,9 @@ package com.huanke.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +20,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import com.huanke.dao.DocumentDao;
 import com.huanke.dao.impl.DocumentDaoImpl;
 import com.huanke.model.Document;
+import com.huanke.util.Md5Encryption;
 
 /**
  * Servlet implementation class UploadServlet
@@ -48,7 +49,6 @@ public class UploadFile extends HttpServlet {
 		if (request.getSession().getAttribute("userId") != null) {
 			userId = (Integer) request.getSession().getAttribute("userId");
 		}
-		System.out.println(userId);
 		// 配置上传参数
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		// 设置内存临界值 - 超过后将产生临时文件并存储于临时目录中(3M)
@@ -72,6 +72,7 @@ public class UploadFile extends HttpServlet {
 
 		Date todayDate = new Date();
 		String todayDateString = dateToStr(todayDate);
+
 		// 构造临时路径来存储上传的文件
 		// 这个路径相对当前应用的目录
 		String uploadPath = request.getContextPath() + "/ServiceData" + File.separator + todayDateString;
@@ -92,8 +93,6 @@ public class UploadFile extends HttpServlet {
 			List<FileItem> formItems = upload.parseRequest(request);
 			String fieldName = null;
 			String fieldValue = null;
-			// 存放每一个上传的文件路径
-			List<String> filePathesList = new ArrayList<String>();
 
 			if (formItems != null && formItems.size() > 0) {
 				// 迭代表单数据
@@ -102,39 +101,41 @@ public class UploadFile extends HttpServlet {
 					// 处理不在表单中的字段
 					if (!item.isFormField()) {
 						String fileName = new File(item.getName()).getName();
-
 						if (!fileName.isEmpty()) {
+							// 获得文件内容，对文件内容生成md5摘要加密，输入流
+							InputStream in = item.getInputStream();
+							String fileMd5 = Md5Encryption.getMD5(in);
 							filePath = uploadPath + File.separator + fileName;
 							File storeFile = new File(filePath);
 
 							// 生成绝对路径用于上传到数据库中
 							filePath = storeFile.getAbsolutePath();
+							Document document = new Document(userId, fieldValue, filePath, fileMd5);
+							DocumentDao documentSql = new DocumentDaoImpl();
+							if (!documentSql.isExistByMd5(fileMd5)) {
+								// 保存文件到硬盘
+								System.out.println("上传到服务器！");
+								item.write(storeFile);
+							}
 
-							// System.out.println(System.getProperty("user.dir"));
+							// 检查完是否有重复文件再把文档 信息添加到数据库中，否则逻辑顺序颠倒就会出错
+							documentSql.addDocument(document);
+
 							// 在控制台输出文件的上传绝对路径
-							filePathesList.add(filePath);
 							System.out.println(filePath);
-
-							// 保存文件到硬盘
-							item.write(storeFile);
 							// 跳转回查询界面
 							out.println(
 									"<script language='javascript'>alert('文档上传成功！');window.location.href='queryResult.jsp';</script>\n");
 							out.println("</html>");
 						}
 
-						// 处理表单中的字段
+						// 处理表单中的字段，获得标题
 					} else {
 						fieldName = item.getFieldName();
 						if (fieldName.equals("documentTitle")) {
 							fieldValue = item.getString("utf-8");
 						}
 					}
-				}
-				for (String filePath : filePathesList) {
-					Document document = new Document(userId, fieldValue, filePath, "md5");
-					DocumentDao documentSql = new DocumentDaoImpl();
-					documentSql.addDocument(document);
 				}
 			}
 		} catch (

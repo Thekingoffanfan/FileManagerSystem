@@ -162,4 +162,32 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 		}
 		return documentsList;
 	}
+
+	/**
+	 * 通过文件内容生成的MD5来检查文件已经存在
+	 * 
+	 * @param String
+	 *            md5
+	 * @return boolean
+	 */
+	@Override
+	public boolean isExistByMd5(String md5) throws SQLException {
+		// TODO Auto-generated method stub
+		Connection conn = this.createSqlConntection("lixtudy");
+		String sql = "select * from document where md5 = '" + md5 + "'";
+		PreparedStatement ps = this.getPreparedStatement(conn, sql);
+		ResultSet results = null;
+		results = ps.executeQuery();
+		if (results.next()) {
+			closeConnection(conn);
+			closePreparedStatement(ps);
+			closeResultSet(results);
+			return true;
+		} else {
+			closeConnection(conn);
+			closePreparedStatement(ps);
+			closeResultSet(results);
+			return false;
+		}
+	}
 }

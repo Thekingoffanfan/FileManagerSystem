@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.huanke.dao.UserDao;
 import com.huanke.dao.impl.UserDaoImpl;
 import com.huanke.model.User;
-import com.huanke.tools.Md5Encryption;
+import com.huanke.util.Md5Encryption;
 
 /**
  * Servlet implementation class Register
