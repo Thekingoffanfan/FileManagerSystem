@@ -76,7 +76,6 @@
   </filter>
   <filter-mapping>
     <filter-name>SystemFilter</filter-name>
-    <url-pattern>/upload.jsp</url-pattern>
-    <dispatcher>REQUEST</dispatcher>
+    <url-pattern>*.jsp</url-pattern>
   </filter-mapping>
 </web-app>
