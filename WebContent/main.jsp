@@ -10,20 +10,33 @@
 body {
 	text-align: center
 }
+
 h1 {
-	color: red;
+	color: red
+}
+
+a {
+	color: blue;
 }
 </style>
 </head>
 <body>
+	<%
+		String filterFeedback = (String)request.getAttribute("filterFeedback");
+	if(filterFeedback != null){%>
+		<script>alert('<%=filterFeedback%>')</script>
+	<%}%>
 	<h1>文档管理系统登录界面</h1>
 	<h2>用户登录</h2>
-	<form action="FileManagerSystem" method="post">
-		用户名：<input type="text" id="username" name="username" value="lixstudy" size="20">
-		<br /> 密 &nbsp;&nbsp码;码：<input type="password" id=userpassword name="userpassword"
-			size="20"> <br /> <br />
-			 <input type="submit"  name="logIn" id="logIn" value="登录"> 
-			 <input type="button" onclick="window.location.href='signin.jsp'" onclick="openpage()" value="注册">
+	<form action="Login" method="post">
+		用户名：<input type="text" id="userName" name="userName" size="20">
+		<br /> 密 &nbsp;&nbsp;码：<input type="password" id=userPassword
+			name="userPassword" maxlength="20" size="20"> <br /> <br />
+		<input type="submit" name="logIn" id="logIn" value="登录"> <input
+			type="button" onclick="window.location.href='register.jsp'"
+			onclick="openpage()" value="注册">
 	</form>
-	</body>
+	<br />
+	<a href='startPage.jsp'>导航页</a>
+</body>
 </html>

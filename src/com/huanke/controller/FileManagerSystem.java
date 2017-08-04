@@ -1,4 +1,4 @@
-package com.huanke;
+package com.huanke.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.huanke.sql.sqlConnection;
+import com.huanke.dao.impl.UserDaoImpl;
 
 /**
  * Servlet implementation class sql_connection
@@ -39,19 +39,7 @@ public class FileManagerSystem extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html;charset=UTF-8");
-		String inputUserName = request.getParameter("addUserName");
-		String inputPassword = request.getParameter("addPassword");
-		User user1 = new User(inputUserName, inputPassword);
-		sqlConnection testSQL = new sqlConnection();
-		testSQL.insertData(user1);
-		PrintWriter out = response.getWriter();
-		String docType = "<!DOCTYPE HTML>\n";
-		String title = "文件管理系统";
-		out.println(docType + "<html>\n" + "<head><title>" + title + "</title></head>\n" + "<body>\n"
-				+ "<h1 align=\"center\">" + title + "</h1>\n");
-		out.println("<script> window.location=http://localhost:8083/FileManagerSystem_1/main.jsp</script>");
+
 	}
 
 	/**
@@ -63,7 +51,7 @@ public class FileManagerSystem extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
-		Connection conn = new sqlConnection().createSqlConntection();
+		Connection conn = new UserDaoImpl().createSqlConntection("lixtudy");
 		Statement stat = null;
 		PrintWriter out = response.getWriter();
 		String title = "文件管理系统";

@@ -1,4 +1,4 @@
-package com.huanke.sql;
+package com.huanke.dao.impl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,50 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.servlet.http.HttpServlet;
-
-import com.huanke.User;
-
-/**
- * MySql Operation
- */
-public class sqlConnection {
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public sqlConnection() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public void insertData(User user) {
-		String name = user.getUserName();
-		String password = user.getUserPassword();
-		Connection conn = null; // 一个连接对象
-		conn = this.createSqlConntection(); // 得到一个连接
-		PreparedStatement ps = null; // 用于插入数据a
-		// sql语句，向表user里面，插入name和pass的值
-		String sql = "insert into checklogin(username,userpassword) values('" + name + "','" + password + "')";
-		ps = this.getPrepareStatement(conn, sql);
-		try {
-			// ps.setString(1, userName);
-			// ps.setString(2, passWord);
-			ps.executeUpdate();
-			ps.close();
-			conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
+public class SqlBaseOperation {
 	/**
 	 * 创建于数据库的链接
 	 * 
 	 * @return conn
 	 */
-	public Connection createSqlConntection() {
+	public Connection createSqlConntection(String databaseName) {
 		String jdbcDriver = "com.mysql.jdbc.Driver";
-		String db_url = "jdbc:mysql://localhost:3306/lixtudy";
+		String db_url = "jdbc:mysql://localhost:3306/" + databaseName + "?useSSL=false";
 		String user = "root";
 		String password = "";
 		Connection conn = null;
@@ -82,8 +47,7 @@ public class sqlConnection {
 	 * 获得Statement
 	 * 
 	 * @param conn
-	 *            数据库链接接口
-	 * @return stmt Statement接口
+	 * @return Statement
 	 */
 	public Statement getStatement(Connection conn) {
 		Statement stmt = null;
@@ -113,11 +77,11 @@ public class sqlConnection {
 
 	/**
 	 * 
-	 * @param conn
-	 * @param sql
-	 * @return pps
+	 * @param Connection
+	 * @param String
+	 * @return PreparedStatement
 	 */
-	public PreparedStatement getPrepareStatement(Connection conn, String sql) {
+	public PreparedStatement getPreparedStatement(Connection conn, String sql) {
 		PreparedStatement pps = null;
 		try {
 			pps = conn.prepareStatement(sql);
@@ -127,11 +91,22 @@ public class sqlConnection {
 		return pps;
 	}
 
+	public void closePreparedStatement(PreparedStatement ps) {
+		if (ps != null) {
+			try {
+				ps.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		ps = null;
+	}
+
 	/**
 	 * 获得ResultSet
 	 * 
-	 * @param stmt
-	 * @return
+	 * @param Statement
+	 * @return ResultSet
 	 */
 	public ResultSet getResultSet(Statement stmt) {
 		ResultSet rs = null;
@@ -146,7 +121,7 @@ public class sqlConnection {
 	/**
 	 * 关闭ResultSet
 	 * 
-	 * @param rs
+	 * @param ResultSet
 	 */
 	public void closeResultSet(ResultSet rs) {
 		if (rs != null) {
@@ -168,4 +143,5 @@ public class sqlConnection {
 			se.printStackTrace();
 		}
 	}
+
 }

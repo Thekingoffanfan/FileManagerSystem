@@ -13,7 +13,7 @@
     <description></description>
     <display-name>FileManagerSystem</display-name>
     <servlet-name>FileManagerSystem</servlet-name>
-    <servlet-class>com.huanke.FileManagerSystem</servlet-class>
+    <servlet-class>com.huanke.controller.FileManagerSystem</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>FileManagerSystem</servlet-name>
@@ -21,12 +21,61 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>sql_connection</display-name>
-    <servlet-name>sql_connection</servlet-name>
-    <servlet-class>com.huanke.sql.sql_connection</servlet-class>
+    <display-name>Register</display-name>
+    <servlet-name>Register</servlet-name>
+    <servlet-class>com.huanke.controller.Register</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>sql_connection</servlet-name>
-    <url-pattern>/sql_connection</url-pattern>
+    <servlet-name>Register</servlet-name>
+    <url-pattern>/Register</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Login</display-name>
+    <servlet-name>Login</servlet-name>
+    <servlet-class>com.huanke.controller.Login</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Login</servlet-name>
+    <url-pattern>/Login</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UploadFile</display-name>
+    <servlet-name>UploadFile</servlet-name>
+    <servlet-class>com.huanke.controller.UploadFile</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UploadFile</servlet-name>
+    <url-pattern>/UploadFile</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>QueryDocument</display-name>
+    <servlet-name>QueryDocument</servlet-name>
+    <servlet-class>com.huanke.controller.QueryDocument</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>QueryDocument</servlet-name>
+    <url-pattern>/QueryDocument</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>DeleteDocument</display-name>
+    <servlet-name>DeleteDocument</servlet-name>
+    <servlet-class>com.huanke.controller.DeleteDocument</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteDocument</servlet-name>
+    <url-pattern>/DeleteDocument</url-pattern>
+  </servlet-mapping>
+  <filter>
+    <display-name>SystemFilter</display-name>
+    <filter-name>SystemFilter</filter-name>
+    <filter-class>com.huanke.filter.SystemFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>SystemFilter</filter-name>
+    <url-pattern>*.jsp</url-pattern>
+  </filter-mapping>
 </web-app>

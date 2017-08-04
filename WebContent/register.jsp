@@ -1,50 +1,53 @@
-<%@ page language="java" import="java.util.*,java.sql.*" pageEncoding="utf-8"%>  
-<%  
-String path = request.getContextPath();  
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";  
-%>  
-  
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">  
-<html>  
-  <head>  
-    <base href="<%=basePath%>">  
-      
-    <title>文件管理系统</title>  
-      
-    <meta http-equiv="pragma" content="no-cache">  
-    <meta http-equiv="cache-control" content="no-cache">  
-    <meta http-equiv="expires" content="0">      
-    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">  
-    <meta http-equiv="description" content="This is my page">  
-    <!-- 
-    <link rel="stylesheet" type="text/css" href="styles.css"> 
-    -->  
-  
-  </head>  
-  <body>  
-    <%        
-            String user = new String(request.getParameter("username").getBytes("utf-8"),"UTF-8");    
-            String pwd = request.getParameter("password");  
-  
-            String driverClass = "com.mysql.jdbc.Driver";  
-            String url = "jdbc:mysql://localhost:3306endaxin";  
-            String username = "root";  
-            String password = "101910";  
-            Class.forName(driverClass);//加载驱动   
-            Connection conn = DriverManager.getConnection(url,username,password);//得到连接 
-            PreparedStatement pStmt = conn.prepareStatement("select * from register where userName = '" + user + "'");  
-              ResultSet rs = pStmt.executeQuery();  
-                if(rs.next()){  
-                    out.println("<script language='javascript'>alert('该用户已存在，请重新注册！');window.location.href='register.jsp';</script>");  
-                }else{  
-                    PreparedStatement tmt = conn.prepareStatement("Insert into register values('" + user + "','" + pwd + "')");  
-                        int rst = tmt.executeUpdate();  
-                        if (rst != 0){  
-                              out.println("<script language='javascript'>alert('用户注册成功！');window.location.href='index.jsp';</script>");    
-                        }else{  
-                           out.println("<script language='javascript'>alert('用户注册失败！');window.location.href='register.jsp';</script>");    
-                        }  
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<script>
+function addCheck(){  
+            var username=document.getElementById("addUserName").value;  
+            var password=document.getElementById("addPassword").value;  
+            var newword=document.getElementById("checkPassword").value;  
+            if(username==""){  
+                alert("用户名不能为空!");  
+                document.getElementById("addUserName").focus();    
+                return false;  
                 }  
-     %>  
-  </body>  
-</html>  
+            if(password==""){  
+                alert("密码不能为空!");  
+                 document.getElementById("addPassword").focus();  
+                 return false;  
+                 }  
+            if(password != newword){  
+                alert("两次输入密码不相同!");  
+                 document.getElementById("checkPassword").focus();  
+                 return false;  
+                 }  
+        }  
+        function validate(){  
+            var flag = addCheck();  
+            if(flag == false)  
+                return false;  
+            return true;  
+        }  
+    </script>  
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>文档管理系统</title>
+	<style type="text/css">
+ 		h1 {color: red}
+		body {text-align: center}
+		a {  color:blue;}
+	</style>
+</head>
+	<body>
+		<h1>文档管理系统注册</h1>
+		<h2>用户注册</h2>
+		<form action="Register" method="post" onsubmit="return validate()">
+			用户名：<input type="text" name="addUserName" id="addUserName"><br><br>
+			密&nbsp;&nbsp;码：<input type="password" name="addPassword" id="addPassword"><br><br>
+			确认密码：<input type="password" name="checkPassword" id="checkPassword"><br><br>
+			<input type="submit" name="signIn" id="signIn" value="注册">
+		</form><br/>
+	<a href='startPage.jsp'>导航页</a>	
+	</body>
+</html>
