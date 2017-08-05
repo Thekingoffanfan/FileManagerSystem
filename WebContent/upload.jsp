@@ -35,9 +35,10 @@
 		<h2>文档上传</h2>
 	</body>
 	<form action="UploadFile" method="post"  enctype="multipart/form-data" onsubmit="return check()">
-		请输入所要上传文档的标题：<input type="text" name="documentTitle" id="documentTitle" size="30"> <br/><br/>
-		请选择所要上传的文件：<input type="file" name="document" id="document" multiple="multiple"><br/><br/>
-		请选择所要上传的文件：<input type="file" name="document2"><br/><br/>
+		请输入所要上传文档的标题：<input type="text" name="documentTitle" id="documentTitle" size="30">
+		<input type="file" name="document" id="document"><br/><br/>
+		请输入所要上传文档的标题：<input type="text" name="documentTitle1" id="documentTitle1" size="30">
+		<input type="file" name="document2"><br/><br/>
 		<input type="submit" name="upload" value="上传">
 	</form><br/>
 	<a href='startPage.jsp'>导航页</a>	

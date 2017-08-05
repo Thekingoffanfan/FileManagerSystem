@@ -3,9 +3,9 @@ package com.huanke.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -83,15 +83,9 @@ public class UploadFile extends HttpServlet {
 			uploadDir.mkdirs();
 		}
 
-		// 输出为html
-		PrintWriter out = response.getWriter();
-		String doctype = "<!DOCTYPE HTML>\n";
-		out.println(doctype + "<html>\n");
-
 		try {
 			// 解析请求的内容提取文件数据
 			List<FileItem> formItems = upload.parseRequest(request);
-			String fieldName = null;
 			String fieldValue = null;
 
 			if (formItems != null && formItems.size() > 0) {
@@ -110,31 +104,33 @@ public class UploadFile extends HttpServlet {
 
 							// 生成绝对路径用于上传到数据库中
 							filePath = storeFile.getAbsolutePath();
-							Document document = new Document(userId, fieldValue, filePath, fileMd5);
 							DocumentDao documentSql = new DocumentDaoImpl();
-							if (!documentSql.isExistByMd5(fileMd5)) {
+							if (documentSql.isExistByMd5(fileMd5)) {
+								List<Document> docList = documentSql.getDocByMD5(fileMd5);
+								Iterator<Document> docIt = docList.iterator();
+								if (docIt.hasNext()) {
+									filePath = docIt.next().getDocumentPath();
+								}
+							} else {
 								// 保存文件到硬盘
 								System.out.println("上传到服务器！");
 								item.write(storeFile);
 							}
 
+							Document document = new Document(userId, fieldValue, filePath, fileMd5);
 							// 检查完是否有重复文件再把文档 信息添加到数据库中，否则逻辑顺序颠倒就会出错
 							documentSql.addDocument(document);
 
 							// 在控制台输出文件的上传绝对路径
 							System.out.println(filePath);
 							// 跳转回查询界面
-							out.println(
-									"<script language='javascript'>alert('文档上传成功！');window.location.href='queryResult.jsp';</script>\n");
-							out.println("</html>");
+							request.setAttribute("queryFeedback", "文档上传成功");
+							request.getRequestDispatcher("/queryResult.jsp").forward(request, response);
 						}
 
 						// 处理表单中的字段，获得标题
 					} else {
-						fieldName = item.getFieldName();
-						if (fieldName.equals("documentTitle")) {
-							fieldValue = item.getString("utf-8");
-						}
+						fieldValue = item.getString("utf-8");
 					}
 				}
 			}

@@ -190,4 +190,29 @@ public class DocumentDaoImpl extends SqlBaseOperation implements DocumentDao {
 			return false;
 		}
 	}
+
+	@Override
+	public List<Document> getDocByMD5(String md5) {
+		// TODO Auto-generated method stub
+		List<Document> documentsList = new ArrayList<Document>();
+		Connection conn = this.createSqlConntection("lixtudy");
+		String sql = "select * from document where md5 = '" + md5 + "'";
+		PreparedStatement ps = this.getPreparedStatement(conn, sql);
+		ResultSet results = null;
+		try {
+			results = ps.executeQuery();
+			while (results.next()) {
+				documentsList.add(new Document(results.getInt(1), results.getInt(2), results.getString(3),
+						results.getString(4), results.getString(5)));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			this.closeConnection(conn);
+			this.closePreparedStatement(ps);
+			this.closeResultSet(results);
+		}
+		return documentsList;
+	}
 }

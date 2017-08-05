@@ -33,7 +33,7 @@ a {
 </script>
 </head>
 <body>
-	<%!String value = "";%>
+	<%! String value = ""; %>
 	<h1>文档管理系统查询界面</h1>
 	<h2>用户查询</h2>
 	<form action="QueryDocument" method="get">
@@ -49,10 +49,12 @@ a {
 	</form>
 	<%
 		//用于报错
-		if (request.getAttribute("feedback") != null) {
-			out.println("<script>alert('" + request.getAttribute("feedback") + "')</script>");
-		}
-		//显示查询结果
+		String queryFeedback = (String)request.getAttribute("queryFeedback");
+		if (queryFeedback != null) {%>
+			<script>alert('<%=queryFeedback%>')</script>
+	<%}%>
+		<%
+			//显示查询结果
 		if (request.getAttribute("results") != null) {
 			//获得当前页，总页数，用于显示
 			int pageNow = 1;
@@ -64,42 +66,37 @@ a {
 				pageCount = (Integer) request.getAttribute("pageCount");
 			}
 			List<Document> results = (List) request.getAttribute("results");
-			//session.setAttribute("sendResults", results);
-			if (!results.isEmpty()) {
-				out.println("<p>查询结果</p>");
-				out.println("<table border='1' align='center'>");
-				out.println("<tr><th>文档标题</th><th>存放路径</th><th></th><tr>");
-				Iterator<Document> resultsIt = results.iterator();
+			if (!results.isEmpty()) {%>
+				<p>查询结果</p>
+				<table border='1' align='center'>
+				<tr><th>文档标题</th><th>存放路径</th><th></th><tr>
+				<%Iterator<Document> resultsIt = results.iterator();
 				while (resultsIt.hasNext()) {
-					Document doc = (Document) resultsIt.next();
-					out.println("<tr><td>" + doc.getDocumentName() + "</td>");
-					out.println("<td>" + doc.getDocumentPath() + "</td>");
-					out.println("<td><a href='DeleteDocument?id=" + doc.getdId() + "&query=" + value
-							+ "' onclick='deletDocument()&pageNow=" + pageNow + "'>删除</a></td></tr>");
-				}
-				out.println("</table>");
-				if (pageNow != 1) {
-					out.println("<a title='上一页' href='QueryDocument?pageNow=" + (pageNow - 1) + "&query=" + value
-							+ "'>上一页</a>");
-				}
+					Document doc = (Document) resultsIt.next();%>
+					<tr><td> <%=doc.getDocumentName()%> </td>
+					<td><%=doc.getDocumentPath()%></td>
+					<td><a href='DeleteDocument?id=<%=doc.getdId() %>&query=<%=value %>&pageNow=<%=pageNow %>' onclick='deletDocument()'>删除</a></td></tr>
+				<%}%>
+				</table>
+				<% if (pageNow != 1) {%>
+					<a href='QueryDocument?pageNow=<%=(pageNow - 1)%>&query=<%=value %>'>上一页</a>
+			<%	}
 				// 显示分页
 				for (int i = 1; i <= pageCount; i++) {
 					// 这个href的写法很重要
-					if (i == pageNow) {
-						out.println("<a style='color:red' href='QueryDocument?pageNow=" + i + "&query=" + value
-								+ "'>" + i + "</a>");
-					} else {
-						out.println("<a href='QueryDocument?pageNow=" + i + "&query=" + value + "'>" + i + "</a>");
-					}
+					if (i == pageNow) {%>
+						<a style='color:red' href='QueryDocument?pageNow=<%=i %>&query=<%=value %>'><%=i %></a>
+					<%} else { %>
+						<a href='QueryDocument?pageNow=<%=i %>&query=<%=value %>'><%=i %></a>
+					<%}
 				}
 				// 显示下一页
-				if (pageNow != pageCount) {
-					out.println("<a title='下一页' href='QueryDocument?pageNow=" + (pageNow + 1) + "&query=" + value
-							+ "'>下一页</a>");
-				}
-				// 显示分页信息
-				out.println("&nbsp;&nbsp;&nbsp;当前页" + pageNow + "/总页数" + pageCount);
-			}
+				if (pageNow != pageCount) {%>
+					<a  href='QueryDocument?pageNow=<%=(pageNow + 1) %>&query=<%=value %>'>下一页</a>
+				<%} 
+				// 显示分页信息%>
+				&nbsp;&nbsp;&nbsp;当前页 <%=pageNow %> /总页数<%=pageCount %>
+			<%}
 		}
 	%>
 	<br />

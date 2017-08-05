@@ -41,6 +41,7 @@ public class DeleteDocument extends HttpServlet {
 
 		// 获得要删除文档的id
 		String tempDocumentId = request.getParameter("id");
+		System.out.println(tempDocumentId);
 		int documentId = Integer.parseInt(tempDocumentId);
 
 		// 获得登录用户名的Id
@@ -62,8 +63,7 @@ public class DeleteDocument extends HttpServlet {
 		deleteDocument.deletDocById(documentId);
 
 		// 把删除后的查询结果传给queryResults.jsp，并返回
-		// request.setAttribute("results", deleteDoc);
-		request.setAttribute("feedback", "删除成功！");
+		request.setAttribute("queryFeedback", "删除成功！");
 		request.getRequestDispatcher("/QueryDocument").forward(request, response);
 
 	}
