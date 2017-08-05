@@ -23,9 +23,14 @@ a {
 <body>
 	<%
 		String filterFeedback = (String)request.getAttribute("filterFeedback");
-	if(filterFeedback != null){%>
+		if(filterFeedback != null){%>
 		<script>alert('<%=filterFeedback%>')</script>
-	<%}%>
+		<%}%>
+	<%
+		String loginFeedback = (String)request.getAttribute("loginFeedback");
+		if(loginFeedback != null){%>
+			<script>alert('<%=loginFeedback%>')</script>
+		<%}%>
 	<h1>文档管理系统登录界面</h1>
 	<h2>用户登录</h2>
 	<form action="Login" method="post">

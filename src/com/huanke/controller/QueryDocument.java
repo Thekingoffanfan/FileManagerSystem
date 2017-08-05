@@ -51,7 +51,6 @@ public class QueryDocument extends HttpServlet {
 		if (request.getSession().getAttribute("userId") != null) {
 			userId = (Integer) request.getSession().getAttribute("userId");
 		}
-		System.out.println(userId);
 		// 文档数据库操作
 		DocumentDao document = new DocumentDaoImpl();
 		List<Document> results = null;
@@ -70,7 +69,7 @@ public class QueryDocument extends HttpServlet {
 
 		// 如果没有匹配到信息，反馈报错信息
 		if (results.isEmpty()) {
-			request.setAttribute("feedback", "没有匹配的信息，请重新输入关键字！");
+			request.setAttribute("queryFeedback", "没有匹配的信息，请重新输入关键字！");
 		}
 		// 将数据发到JSP
 		RequestDispatcher rd = request.getRequestDispatcher("/queryResult.jsp");

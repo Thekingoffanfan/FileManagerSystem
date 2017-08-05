@@ -1,7 +1,6 @@
 package com.huanke.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,12 +53,6 @@ public class Login extends HttpServlet {
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
 
-		// 生成所要输出的html文本头
-		PrintWriter out = null;
-		out = response.getWriter();
-		String doctype = "<!DOCTYPE HTML>\n";
-		out.println(doctype + "<html>\n");
-
 		// 生成用户数据
 		String userName = null;
 		String userPassword = null;
@@ -90,14 +83,15 @@ public class Login extends HttpServlet {
 				HttpSession session = request.getSession();
 				session.setAttribute("userInfo", userName);
 				session.setAttribute("userId", userId);
-				out.println("<script>alert('登录成功');window.location.href='queryResult.jsp';</script>");
+				request.setAttribute("loginFeedback", "登录成功");
+				request.getRequestDispatcher("/queryResult.jsp").forward(request, response);
 			} else {
-				out.println("<script>alert('用户名或密码错误！');window.location.href='main.jsp';</script> ");
+				request.setAttribute("loginFeedback", "用户名或密码错误！");
+				request.getRequestDispatcher("/main.jsp").forward(request, response);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		out.println("</html>\n");
 	}
 }
